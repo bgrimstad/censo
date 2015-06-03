@@ -1,0 +1,36 @@
+\begin{thebibliography}{1}
+
+\bibitem{Adjiman19981137}
+C.S. Adjiman, S.~Dallwig, C.A. Floudas, and A.~Neumaier.
+\newblock A global optimization method, αbb, for general twice-differentiable
+  constrained \{NLPs\} — i. theoretical advances.
+\newblock {\em Computers \& Chemical Engineering}, 22(9):1137 -- 1158, 1998.
+
+\bibitem{Boyd:2004:CO:993483}
+Stephen Boyd and Lieven Vandenberghe.
+\newblock {\em Convex Optimization}.
+\newblock Cambridge University Press, New York, NY, USA, 2004.
+
+\bibitem{clausen1999branch}
+Jens Clausen.
+\newblock Branch and bound algorithms-principles and examples.
+\newblock {\em Department of Computer Science, University of Copenhagen}, pages
+  1--30, 1999.
+
+\bibitem{eigenweb}
+Ga\"{e}l Guennebaud, Beno\^{i}t Jacob, et~al.
+\newblock Eigen v3.
+\newblock http://eigen.tuxfamily.org, 2010.
+
+\bibitem{Nocedal99}
+Jorge Nocedal and Stephen~J. Wright.
+\newblock {\em Numerical Optimization}.
+\newblock Springer, 1999.
+
+\bibitem{Wachter2006}
+Andreas Wächter and Lorenz~T. Biegler.
+\newblock On the implementation of an interior-point filter line-search
+  algorithm for large-scale nonlinear programming.
+\newblock {\em Mathematical Programming}, 106(1):25--57, 2006.
+
+\end{thebibliography}

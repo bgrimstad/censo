@@ -1,0 +1,162 @@
+\section{Solvers}
+
+\subsection{Ipopt}
+Ipopt solves convex NLPs and LPs.
+Refer to the Ipopt documentation.
+
+\subsection{\solvername}
+\solvername\ solves convex MINLPs and non-convex MINLPs with convex relaxations available.
+\subsubsection{Basic algorithm parameters}
+This section describes the parameters/settings of the \solvername\ Branch-and-Bound algorithm. The corresponding variables that must be adjusted for the various parameters are found in table \ref{tbl:bbvars}. These variables are all members in the \class{BranchAndBound} class. If adjustments are to be made, they must be made in the instance of \class{BranchAndBound} used for optimization.
+\begin{itemize}
+\item{\textbf{Convergence limit $\varepsilon$.}} The value of $\varepsilon$ is the termination criteria for the Branch-and-Bound algorithm. When the optimality gap (the difference between the upper and lower bounds) becomes less than or equal to $\varepsilon$, the Branch-and-Bound algorithm terminates.
+\item{\textbf{Maximum number of iterations.}} This parameter sets the maximum number of iterations before the algorithm terminates (regardless of whether the optimal point has been found or not).
+\item{\textbf{Maximum number of infeasible iterations.}} This parameter sets the maximum number of infeasible iterations before the algorithm terminates. A high number of infeasible iterations can indicate that the algorithm has ventured outside the domain in which the constraints are well defined, and is struggling to find feasible solutions.
+\item{\textbf{Maximum node tree depth.}} This parameter sets the maximum depth in the Branch-and-Bound node tree. It the node tree gets very deep, this can indicate that the  convex relaxations do not get tight, resulting in indefinite branching.
+\end{itemize}
+\begin{table}[H]
+	\begin{tabular}[c]{|l|l|l|}
+		\hline
+		\textbf{Parameter} & \textbf{Data type} &  \textbf{Variable name} \\
+		\hline
+		Convergence limit $\varepsilon$ & \keyword{double}  & \member{epsilon} \\
+		\hline
+		Max. \# iterations & \keyword{int} & \member{maxIterations} \\
+		\hline
+		Max. \# infeasible iterations & \keyword{int} & \member{maxInfeasibleIterations} \\
+		\hline
+		Max. node tree depth & \keyword{int} & \member{maxDepth} \\
+		\hline
+\end{tabular}
+\caption{Algorithm parameters and corresponding variable names}
+\label{tbl:bbvars}
+\end{table}
+
+\subsubsection{Branch-and-Bound specific parameters}
+This section describes a few more specialized parameters which can be used to adjust the behaviour of the Branch-and-Bound algorithm.  A summary of these parameters and their corresponding variables is found in table \ref{tbl:bbspecvars}. These variables are all members in the \class{BranchAndBound} class. If adjustments are to be made, they must be made in the instance of \class{BranchAndBound} used for optimization.
+\begin{itemize}
+\item{\textbf{Node selection strategy.}} This parameter decides which node in the node tree is selected as the next node for processing. The available options are shown in table \ref{tbl:nodeselection}.
+\begin{table}[H]
+	\begin{tabular}[c]{|l|p{6.7cm}|}
+		\hline
+		\multicolumn{2}{|l|}{Variable name: \member{nodeSelectionStrategy}} \\
+		\hline
+		\class{BEST\_FIRST} & Selects the node with the best (greatest) lower bound.\\
+		\hline
+		\class{DEPTH\_FIRST} & Selects the nodes based on a standard depth-first search (DFS). \\
+		\hline
+		\class{BREADTH\_FIRST} & Selects the nodes based on a standard breadth-first search (BFS).\\
+		\hline
+		\class{DEPTH\_FIRST\_BREADTH\_AFTER} & Selects nodes based on depth-first search until a feasible solution is found, then switches to breadth-first search.\\
+		\hline
+		\class{BREADTH\_FIRST\_DEPTH\_AFTER} & Selects nodes based on breadth-first search until a feasible solution is found, then switches to depth-first search.\\
+		\hline
+		\class{RANDOM\_NODE} & Selects a random node from the tree.\\
+		\hline
+	\end{tabular}
+\caption{Node selection strategy options}
+\label{tbl:nodeselection}
+\end{table}
+
+\item{\textbf{Node processing policy.}} This parameter decides the policy for node processing. The available options are shown in table \ref{tbl:nodeprocessing}.
+\begin{table}[H]
+	\begin{tabular}[c]{|l|p{10.5cm}|}
+		\hline
+		\multicolumn{2}{|l|}{Variable name: \member{nodeProcessingPolicy}} \\
+		\hline
+		\class{EAGER} & When a node is selected, its child nodes are processed - nodes are selected after they have been processed. The benefit of this approach is that it causes the algorithm to select better nodes for processing, but it may process more nodes than necessary.\\
+		\hline
+		\class{LAZY} & When a node is selected, the node itself is processed - nodes are selected before they have been processed. Selecting nodes before they are processed may cause the algorithm to select poor nodes for processing, but it does not process more nodes than necessary.\\
+		\hline
+	\end{tabular}
+\caption{Node selection strategy options}
+\label{tbl:nodeprocessing}
+\end{table}
+
+\item{\textbf{Branching rules for integer variables.}} This parameter decides the rules for branching on integer varianles. The available options are shown in table \ref{tbl:branchinginteger}.
+\begin{table}[H]
+	\begin{tabular}[c]{|l|p{8.6cm}|}
+		\hline
+		\multicolumn{2}{|l|}{Variable name: \member{branchingRuleInteger}} \\
+		\hline
+		\class{MOST\_FRACTIONAL} & Branches on the most fractional integer variable, that is, the variable furthest from an integer value, that is, the variable with fractional part closest to 0.5. \\
+		\hline
+		\class{PSEUDOCOST} & This rule keeps track of how successful the algorithm has been in branching on each variable which has been branched on so far, and selects the variable with the best record in increasing the lower bound. \emph{This strategy has not yet been implemented.}\\
+		\hline
+		\class{STRONG\_BRANCHING} & Strong branching tests which of the candidates will give the best improvement before branching. \emph{This strategy has not yet been implemented.} \\
+		\hline
+	\end{tabular}
+\caption{Options for branching rules for integer variables}
+\label{tbl:branchinginteger}
+\end{table}
+
+\item{\textbf{Branching rules for continuous variables.}} This parameter decides the rules for branching on continuous varianles. The available options are shown in table \ref{tbl:branchingcontinuous}.
+\begin{table}[H]
+	\begin{tabular}[c]{|l|p{8.6cm}|}
+		\hline
+		\multicolumn{2}{|l|}{Variable name: \member{branchingRuleContinuous}} \\
+		\hline
+		\class{MOST\_PROMISING} & This rule keeps track of how successful the algorithm has been in branching on each variable which has been branched on so far, and selects the variable with the best record in increasing the lower bound. \\
+		\hline
+		\class{LONGEST\_INTERVAL} & This rule selects the variable with the longest bound interval, that is, the difference between the upper and lower bound for the variable. \\
+		\hline
+		\class{RANDOM\_VARIABLE} & This rule selects a random variable for branching. \\
+		\hline
+	\end{tabular}
+\caption{Options for branching rules for continuous variables}
+\label{tbl:branchingcontinuous}
+\end{table}
+
+\item{\textbf{Branching priority.}} This parameter decides how the different variable types are prioritized for branching. The available options are shown in table \ref{tbl:branchingpriority}.
+\begin{table}[H]
+	\begin{tabular}[c]{|l|p{8.6cm}|}
+		\hline
+		\multicolumn{2}{|l|}{Variable name: \member{branchingRuleContinuous}} \\
+		\hline
+		\class{BINARY\_INTEGER\_CONTINUOUS} & Starts with branching on all binary variables. When finished with the binary variables, the algorithm branches on the integer variables. Finally, continuous variables are branched on. \\
+		\hline
+		\class{RANDOM\_MIX} & Selects a random mix of binary, integer and continuous variables for branching. \\
+		\hline
+	\end{tabular}
+\caption{Options for branching priority}
+\label{tbl:branchingpriority}
+\end{table}
+
+A summary of the parameters described above is found in the table below:
+\end{itemize}
+\begin{table}[H]
+	\begin{tabular}[c]{|p{2cm}|l|l|}
+		\hline
+		\textbf{Parameter} & \textbf{Variable name} & \textbf{Possible values} \\
+		\hline
+		Node sel. & \member{nodeSelectionStrategy}  & \class{BEST\_FIRST} \\
+		strategy & & \class{DEPTH\_FIRST} \\
+		& & \class{BREADTH\_FIRST} \\
+		& & \class{DEPTH\_FIRST\_BREADTH\_AFTER} \\
+		& & \class{BREADTH\_FIRST\_DEPTH\_AFTER} \\
+		& & \class{RANDON\_NODE} \\ \cline{3-3}
+		\hline
+		Node proc. & \member{nodeProcessingPolicy} & \class{EAGER} \\
+		policy & & \class{LAZY} \\ \cline{3-3}
+		\hline
+		Branching & \member{branchingRuleInteger} & \class{MOST\_FRACTIONAL} \\
+		rule for & & \class{PSEUDOCOST} \\
+		int. vars. & & \class{STRONG\_BRANCHING} \\ \cline{3-3}
+		\hline
+		Branching & \member{branchingRuleContinuous} & \class{MOST\_PROMISING} \\
+		rule for & & \class{LONGEST\_INTERVAL} \\
+		cont. vars. & & \class{RANDOM\_VARIABLE} \\ \cline{3-3}
+		\hline
+		Branching & \member{branchingPriority} & \class{BINARY\_INTEGER\_CONTINUOUS} \\
+		priorities & & \class{RANDOM\_MIX} \\
+		\hline
+	\end{tabular}
+\caption{Summary of Branch-and-Bound specific parameters, their corresponding variable names and possible values.}
+\label{tbl:bbspecvars}
+\end{table}
+
+
+
+\subsection{Bonmin}
+Bonmin solves convex MINLPs.
+Refer to the Bonmin documentation.

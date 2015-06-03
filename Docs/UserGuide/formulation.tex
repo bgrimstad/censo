@@ -1,0 +1,185 @@
+\section{Formulation of an optimization problem}
+
+This section will introduce the C++ classes of the optimization framework. An optimization problem is made up of one objective object, one constraint object, three double vectors (variable lower bound, upper bound and solver starting point). Branch-and-Bound solvers will in addition to these need two int vectors, one for variable types (continuous, binary or integer) and one for the indices of variables that can be divided in the branching procedure.  
+
+\subsection{Type definitions}
+The framework makes use of type definitions for the most commonly used data structures and types. 
+
+\begin{lstlisting}
+// Eigen vectors
+typedef Eigen::VectorXd DenseVector;
+typedef Eigen::SparseVector<double> SparseVector;
+
+// Eigen matrices
+typedef Eigen::MatrixXd DenseMatrix;
+typedef Eigen::SparseMatrix<double> SparseMatrix; // declares a column-major sparse matrix type of double
+\end{lstlisting}
+
+\subsection{Smart pointers}
+Smart pointers are used for all classes defined in the framework. The smart pointer implementation used is the stl \class{shared\_pointer} via typedefs that append \textit{Ptr} to the class name, i.e.
+\begin{lstlisting}
+typedef std::shared_ptr< ClassName > ClassNamePtr;.
+\end{lstlisting}
+
+\subsection{Variable bounds}
+
+Variable bounds are represented as stl vectors of type double. A constant \texttt{INF} is defined to represent positive infinity and is used in the case on an unbounded variable.
+
+As an example take a problem with the three variables $x_{0}, x_{1}, x_{2}$ and the variable bounds 
+\begin{align*}
+0 &\leq x_{0} \leq 1 \\
+0 &\leq x_{1} \leq 3 \\
+-\infty &\leq x_{2} \leq \infty
+\end{align*}
+The declaration of these would be
+\begin{lstlisting}
+std::vector< double > lb {0, 0, -INF};
+std::vector< double > ub {1, 2,  INF};
+\end{lstlisting}
+
+
+\subsection{Variable types}
+Variable types are represented as stl vectors of type \keyword{int}. The types are declared as an \keyword{enum}. The available types are \class{BINARY}, \class{INTEGER} and \class{CONTINUOUS}. The code snippet below shows how to create a vector of variable types.
+\begin{lstlisting}
+std::vector< int > variable_types {BINARY, INTEGER, CONTINUOUS};
+\end{lstlisting}
+
+\subsection{Starting point}
+Solvers require a starting point for the optimization. This is provided as a double vector.
+\begin{lstlisting}
+std::vector< double > z0 {0, 0, 0};.
+\end{lstlisting}
+
+\subsection{Branching variables}
+Branch and bound solvers must be supplied with a list of indices that indicate which variables that should be used in the branching procedure. This is to avoid unnecessary branching on variables that do not take part in nonconvex terms. 
+The indexes are given as an \keyword{int} vector. As an example; to allow branching on $x_{0}, x_{1}$ and $x_{5}$ the code would be
+\begin{lstlisting}
+std::vector< int > branching_variables {0, 1, 5};.
+\end{lstlisting}
+
+\subsection{The objective function}
+The objective is given by the \class{Objective} class. \class{Objective} is abstract and defines the interface that solvers can use. The most important functions of the interface are explained below.
+
+\begin{lstlisting}
+void eval(DenseVector& x,DenseVector& y)
+\end{lstlisting}
+evaluates the objective at \texttt{x} and stores the value in \texttt{y}.
+
+\begin{lstlisting}
+void evalGradient(DenseVector& x,DenseVector& dx)
+\end{lstlisting}
+evaluates the objective gradient at \texttt{x} and stores the value in \texttt{dx}.
+
+\begin{lstlisting}
+void evalHessian(DenseVector& x,DenseVector& ddx)
+\end{lstlisting}
+evaluates the objective Hessian at \texttt{x} and stores the value in \texttt{ddx}. The Hessian is stored in the format indicated by 
+\begin{lstlisting}
+void structureHessian(std::vector< int >& iRow, std::vector< int >& jCol)
+\end{lstlisting}
+where \texttt{iRow} and \texttt{jCol} indicates the positions in the Hessian matrix.
+
+\begin{lstlisting}
+void augmentDomain(int dim)
+\end{lstlisting}
+will increase the dimension of the domain without altering the objective function itself (this is only to allow solver to introduce additional variables for instance when creating convex relaxations).
+
+
+As an example; to create the linear objective function $f(x) = c^{T}x$ with $c^{T} = \left[ 0,\,0,\,1 \right]$ we must first create the vector $c^{T}$. It is represented by a Eigen matrix object $v = c^{T}$.  We can create this  by writing
+\begin{lstlisting}
+int numVars = 3;
+DenseMatrix v (1,numVars);
+v << 0, 0, 1;
+\end{lstlisting}
+An \class{Objective} pointer is then made by writing
+\begin{lstlisting}
+ObjectivePtr obj (new ObjectiveLinear(v));
+\end{lstlisting}
+
+Currently only linear objectives are avaiable. The global branch and bound solver assumes a convex objective. 
+
+
+\subsection{The constraints}
+
+Constraints are defined using the \class{Constraint} class. Most constraint class implementations represents a type of constraint function, i.e. linear equations, polynomials or B-splines. The exception being the composite constraint. The composite constraint holds a collection of other constraint objects and represents them as if they were one unified object.
+
+The most important functions in the constraint interface are described below.
+\begin{lstlisting}
+void eval(DenseVector& x, DenseVector& y)
+\end{lstlisting}
+evaluates the constraint at \texttt{x} and stores the value in \texttt{y}.
+
+\begin{lstlisting}
+void evalJacobian(DenseVector& x, DenseVector& dx)
+\end{lstlisting}
+evaluates the constraint Jacobian at \texttt{x} and stores the value in \texttt{dx} using the structure given by
+\begin{lstlisting}
+void structureJacobian(std::vector< int >& iRow, std::vector< int >& jCol).
+\end{lstlisting}
+
+\begin{lstlisting}
+void evalHessian(DenseVector& x, DenseVector& ddx)
+\end{lstlisting}
+evaluates the constraint Hessian at \texttt{x} and stores the value in \texttt{ddx} using the structure given by
+\begin{lstlisting}
+void structureHessian(std::vector< int >& eqnr, std::vector< int >& iRow, std::vector< int >& jCol)
+\end{lstlisting}
+
+\begin{lstlisting}
+void setDomainBounds(std::vector< double > lb, std::vector< double > ub)
+\end{lstlisting}
+chages the domain bounds. The new bounds must be a subset of the current constraint domain.
+
+
+The constraint composite is a special constraint object that contains a list of other constraint objects. It is based on the composite pattern. The composite has a add function that accepts a constraint object along with a vector of indexes that indicates which variables that are related to the constraint. 
+
+the following code snippet illustrates how to make a cubic B-spline constraint from a data table.
+\begin{lstlisting}
+InterpolationTable data = ...
+int splineDegree = 3;
+int equality = true;
+ConstraintPtr cbspline(new ConstraintBspline(data, 3, equality));
+\end{lstlisting}
+
+If we wish to use more than one constraint they must be collected in a composite object. The composite is created by first passing the number of variables along with the variable bounds. The constraint objects are then added in turn.
+\begin{lstlisting}
+int numvars = ...;
+ConstraintCompositePtr constraints(new ConstraintComposite(numvars, lb, ub));
+
+//add the bspline constraint using variables x1, x3 and x5
+std::vector< int > idx{1, 3, 5};
+constraints->add(cbspline, idx);
+
+//add more constraints...
+std::vector< int > idx2{i1, i2, ..., in};
+ConstraintPrt c2 = new Constraint....
+constraints->add(c2, idx2);
+\end{lstlisting}
+
+\subsection{The Solver}
+The solvers are called by creating an \class{Optimizer} object, passing the objective, constraint, bounds, starting point and, if required, the variable types and branching variables to the \class{Optimizer} constructor. The problem is then solved by calling \texttt{optimize()} and the solution can be extracted using get functions. Available solvers are Ipopt, Bonmin and a homemade global branch and bound solver.
+
+The optimization problem is solved by calling \texttt{optimize()}. The return value from optimize indicates whether the solver was successful or not. Possible return values are 1 (success) and 0 (unsuccessful).
+
+\begin{lstlisting}
+//Local solution using Ipopt (ignoring integer restrictions)
+OptimizerIpopt ip (objective, constraints, z0);
+int returnStatus = ip.optimize();
+\end{lstlisting}
+
+\begin{lstlisting}
+//Local, integer feasible solution using Bonmin
+OptimizerBonmin ip (objective, constraints, 
+	z0, variable_types, branching_variables);
+int returnStatus = ip.optimize();
+\end{lstlisting}
+
+
+\begin{lstlisting}
+//Global solution using branch and bound
+BranchAndBound bnb(objective, constraints, 
+	z0, variable_types, branching_variables);	
+int returnStatus = bnb.optimize();
+\end{lstlisting}
+
+

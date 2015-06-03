@@ -1,0 +1,53 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Intent and reader prerequisites}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Types of problems solved}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{Supported constraint classes}{section.1}% 4
+\BOOKMARK [2][-]{subsection.1.4}{Mathematical background}{section.1}% 5
+\BOOKMARK [3][-]{subsubsection.1.4.1}{The epigraph form}{subsection.1.4}% 6
+\BOOKMARK [3][-]{subsubsection.1.4.2}{Convexity and convex relaxations}{subsection.1.4}% 7
+\BOOKMARK [3][-]{subsubsection.1.4.3}{The B-spline}{subsection.1.4}% 8
+\BOOKMARK [3][-]{subsubsection.1.4.4}{Global optimization and the Branch-and-Bound algorithm}{subsection.1.4}% 9
+\BOOKMARK [2][-]{subsection.1.5}{Availability}{section.1}% 10
+\BOOKMARK [2][-]{subsection.1.6}{Prerequisites}{section.1}% 11
+\BOOKMARK [3][-]{subsubsection.1.6.1}{Ipopt}{subsection.1.6}% 12
+\BOOKMARK [3][-]{subsubsection.1.6.2}{Eigen}{subsection.1.6}% 13
+\BOOKMARK [1][-]{section.2}{Installation}{}% 14
+\BOOKMARK [2][-]{subsection.2.1}{Getting system packages}{section.2}% 15
+\BOOKMARK [2][-]{subsection.2.2}{Getting the code}{section.2}% 16
+\BOOKMARK [2][-]{subsection.2.3}{External code}{section.2}% 17
+\BOOKMARK [2][-]{subsection.2.4}{Compiling}{section.2}% 18
+\BOOKMARK [1][-]{section.3}{Using CENSO through C++/Qt}{}% 19
+\BOOKMARK [2][-]{subsection.3.1}{Code structure}{section.3}% 20
+\BOOKMARK [1][-]{section.4}{Formulation of an optimization problem}{}% 21
+\BOOKMARK [2][-]{subsection.4.1}{Type definitions}{section.4}% 22
+\BOOKMARK [2][-]{subsection.4.2}{Smart pointers}{section.4}% 23
+\BOOKMARK [2][-]{subsection.4.3}{Variable bounds}{section.4}% 24
+\BOOKMARK [2][-]{subsection.4.4}{Variable types}{section.4}% 25
+\BOOKMARK [2][-]{subsection.4.5}{Starting point}{section.4}% 26
+\BOOKMARK [2][-]{subsection.4.6}{Branching variables}{section.4}% 27
+\BOOKMARK [2][-]{subsection.4.7}{The objective function}{section.4}% 28
+\BOOKMARK [2][-]{subsection.4.8}{The constraints}{section.4}% 29
+\BOOKMARK [2][-]{subsection.4.9}{The Solver}{section.4}% 30
+\BOOKMARK [1][-]{section.5}{Solvers}{}% 31
+\BOOKMARK [2][-]{subsection.5.1}{Ipopt}{section.5}% 32
+\BOOKMARK [2][-]{subsection.5.2}{CENSO}{section.5}% 33
+\BOOKMARK [3][-]{subsubsection.5.2.1}{Basic algorithm parameters}{subsection.5.2}% 34
+\BOOKMARK [3][-]{subsubsection.5.2.2}{Branch-and-Bound specific parameters}{subsection.5.2}% 35
+\BOOKMARK [2][-]{subsection.5.3}{Bonmin}{section.5}% 36
+\BOOKMARK [1][-]{section.6}{Example problems}{}% 37
+\BOOKMARK [2][-]{subsection.6.1}{Testing framework and the type TestProblem class}{section.6}% 38
+\BOOKMARK [2][-]{subsection.6.2}{Farming problem}{section.6}% 39
+\BOOKMARK [3][-]{subsubsection.6.2.1}{Linear programming case}{subsection.6.2}% 40
+\BOOKMARK [3][-]{subsubsection.6.2.2}{Quadratic programming case}{subsection.6.2}% 41
+\BOOKMARK [3][-]{subsubsection.6.2.3}{Integer variables}{subsection.6.2}% 42
+\BOOKMARK [2][-]{subsection.6.3}{Network flow problem}{section.6}% 43
+\BOOKMARK [3][-]{subsubsection.6.3.1}{Simple maximum flow case}{subsection.6.3}% 44
+\BOOKMARK [3][-]{subsubsection.6.3.2}{Maximum flow with routing}{subsection.6.3}% 45
+\BOOKMARK [3][-]{subsubsection.6.3.3}{Pressure driven flow case - Linear flow model red \(INCOMPLETE\)}{subsection.6.3}% 46
+\BOOKMARK [2][-]{subsection.6.4}{The Six-Hump Camelback function}{section.6}% 47
+\BOOKMARK [3][-]{subsubsection.6.4.1}{Formulating the optimization problem}{subsection.6.4}% 48
+\BOOKMARK [3][-]{subsubsection.6.4.2}{Domain bounds, starting point, objective function and constraint set.}{subsection.6.4}% 49
+\BOOKMARK [3][-]{subsubsection.6.4.3}{Local optimization using the type ConstraintPolynomial class}{subsection.6.4}% 50
+\BOOKMARK [3][-]{subsubsection.6.4.4}{Local optimization using a custom constraint class}{subsection.6.4}% 51
+\BOOKMARK [3][-]{subsubsection.6.4.5}{Global optimization using Alpha-Branch-and-Bound}{subsection.6.4}% 52
+\BOOKMARK [3][-]{subsubsection.6.4.6}{Global optimization using a B-spline approximation}{subsection.6.4}% 53
