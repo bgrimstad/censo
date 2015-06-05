@@ -66,7 +66,8 @@ SOURCES += main.cpp \
     TestProblems/asaadi1.cpp \
     TestProblems/linearintervalanalysistest.cpp \
     Test/testproblems.cpp \
-    Test/unittests.cpp
+    Test/unittests.cpp \
+    OptimizationProblem/constraintapproximant.cpp
 
 HEADERS += \
     Utils/definitions.h \
@@ -139,4 +140,5 @@ HEADERS += \
     TestProblems/bilinearrelaxationtest.h \
     TestProblems/asaadi1.h \
     TestProblems/linearintervalanalysistest.h \
-    Test/unittests.h
+    Test/unittests.h \
+    OptimizationProblem/constraintapproximant.h
