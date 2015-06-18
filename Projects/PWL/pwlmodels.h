@@ -14,7 +14,7 @@
 #include "datatable.h"
 #include "OptimizationProblem/constraint.h"
 
-using Splinter::DataTable;
+using SPLINTER::DataTable;
 using namespace CENSO;
 
 /*

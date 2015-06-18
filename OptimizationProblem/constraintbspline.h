@@ -13,7 +13,7 @@
 #include "constraint.h"
 #include "bspline.h"
 
-using Splinter::BSpline;
+using SPLINTER::BSpline;
 
 namespace CENSO
 {

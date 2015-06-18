@@ -17,9 +17,9 @@
 
 using std::cout;
 using std::endl;
-using Splinter::BSpline;
-using Splinter::DataTable;
-using Splinter::BSplineType;
+using SPLINTER::BSpline;
+using SPLINTER::DataTable;
+using SPLINTER::BSplineType;
 
 namespace CENSO
 {
@@ -104,7 +104,7 @@ void SixHumpCamel::runProblem()
     //    cout << bsmin << endl;
 
     ConstraintSetPtr constraints2 = std::make_shared<ConstraintSet>();
-    BSpline bs(data, BSplineType::CUBIC_FREE);
+    BSpline bs(data, BSplineType::CUBIC);
     ConstraintPtr cbspline = std::make_shared<ConstraintBSpline>(vars, bs, true);
     constraints2->add(cbspline);
 

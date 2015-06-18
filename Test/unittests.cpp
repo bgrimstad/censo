@@ -17,7 +17,7 @@ void testConstraintBSplineRangeReduction1()
     coefficients << 1, 1, 0, 0, -1, -1;
     std::vector< std::vector<double> > knots = {{0,0,1,2,3,4,5,5}}; // Should have n+p+1 knots!
     std::vector<unsigned int> degrees = {1};
-    Splinter::BSpline bspline(coefficients, knots, degrees);
+    SPLINTER::BSpline bspline(coefficients, knots, degrees);
 
     std::vector<VariablePtr> vars = {std::make_shared<Variable>(1, 0, 5),
                                      std::make_shared<Variable>(1, 0, 0.99)};
@@ -36,7 +36,7 @@ void testConstraintBSplineRangeReduction2()
     coefficients << 1, 1, 1, 0, -1, -1, -1;
     std::vector< std::vector<double> > knots = {{0,0,0,1,2,3,4,5,5,5}}; // Should have n+p+1 knots!
     std::vector<unsigned int> degrees = {2};
-    Splinter::BSpline bspline(coefficients, knots, degrees);
+    SPLINTER::BSpline bspline(coefficients, knots, degrees);
 
     std::vector<VariablePtr> vars = {std::make_shared<Variable>(1, 0, 5),
                                      std::make_shared<Variable>(1, 0, 0.99)};
@@ -57,7 +57,7 @@ void testConstraintBSplineRangeReduction3()
 
     auto func = [](double x){ return 2*x*x*x*x - 8*x*x*x + 8*x*x + 2; };
 
-    Splinter::DataTable data;
+    SPLINTER::DataTable data;
 
     for (auto x : xs)
     {
@@ -65,7 +65,7 @@ void testConstraintBSplineRangeReduction3()
         data.addSample(x,y);
     }
 
-    Splinter::BSpline bs(data, Splinter::BSplineType::CUBIC_FREE);
+    SPLINTER::BSpline bs(data, SPLINTER::BSplineType::CUBIC);
 
     std::vector<VariablePtr> vars = {std::make_shared<Variable>(1, -10, 10),
                                      std::make_shared<Variable>(1, 0, 5)};
@@ -88,7 +88,7 @@ void testConstraintBSplineRangeReduction3()
 
 //    auto func = [](double x, double y){ return 2*x*x*x*x - 8*x*x*x + 8*x*x + 2 - 10*y*y; };
 
-//    Splinter::DataTable data;
+//    SPLINTER::DataTable data;
 
 //    for (auto x : xs)
 //    {
@@ -101,7 +101,7 @@ void testConstraintBSplineRangeReduction3()
 
 //    }
 
-//    Splinter::BSpline bs(data, Splinter::BSplineType::CUBIC_FREE);
+//    SPLINTER::BSpline bs(data, SPLINTER::BSplineType::CUBIC);
 
 //    /*
 //     * Should tighten bounds to
@@ -286,12 +286,12 @@ void testConvexRelaxations()
     A << 3, 2, 1;
     ConstraintPtr lincon2 = std::make_shared<ConstraintLinear>(vars, A, b, true);
 
-    Splinter::DataTable data;
+    SPLINTER::DataTable data;
     data.addSample(0,0);
     data.addSample(0.5,0.5);
     data.addSample(1,1);
 
-    Splinter::BSpline bs(data, Splinter::BSplineType::LINEAR);
+    SPLINTER::BSpline bs(data, SPLINTER::BSplineType::LINEAR);
     auto bsvars = {vars.at(0), vars.at(1)};
     ConstraintPtr bscon = std::make_shared<ConstraintBSpline>(bsvars, bs, true);
 

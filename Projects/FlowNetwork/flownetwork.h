@@ -19,8 +19,8 @@
 #include "OptimizationProblem/constraintbspline.h"
 
 using namespace CENSO;
-using Splinter::BSpline;
-using Splinter::DataTable;
+using SPLINTER::BSpline;
+using SPLINTER::DataTable;
 
 namespace FlowNetwork
 {

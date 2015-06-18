@@ -30,7 +30,7 @@ SparseMatrix getSelectionMatrix(unsigned int k, unsigned int degree, unsigned in
 }
 
 template <unsigned int N>
-ConstraintPtr constraintPiecewisePolynomialDCC(Variables vars, Splinter::BSpline bspline)
+ConstraintPtr constraintPiecewisePolynomialDCC(Variables vars, SPLINTER::BSpline bspline)
 {
     unsigned int dim = bspline.getNumVariables();
     assert(dim == N);
@@ -227,7 +227,7 @@ ConstraintPtr constraintPiecewisePolynomialDCC(Variables vars, Splinter::BSpline
 }
 
 template <unsigned int N>
-ConstraintPtr constraintPiecewisePolynomialDCC2(Variables vars, Splinter::BSpline bspline)
+ConstraintPtr constraintPiecewisePolynomialDCC2(Variables vars, SPLINTER::BSpline bspline)
 {
     unsigned int dim = bspline.getNumVariables();
     assert(dim == N);
@@ -394,7 +394,7 @@ ConstraintPtr constraintPiecewisePolynomialDCC2(Variables vars, Splinter::BSplin
 }
 
 template <unsigned int N>
-ConstraintPtr constraintPiecewisePolynomialDLog(Variables vars, Splinter::BSpline bspline)
+ConstraintPtr constraintPiecewisePolynomialDLog(Variables vars, SPLINTER::BSpline bspline)
 {
     /*
      * Check if digit l of integer b is 1,
@@ -646,7 +646,7 @@ ConstraintPtr constraintPiecewisePolynomialDLog(Variables vars, Splinter::BSplin
 }
 
 template <unsigned int N>
-ConstraintPtr constraintPiecewisePolynomialDLog2(Variables vars, Splinter::BSpline bspline)
+ConstraintPtr constraintPiecewisePolynomialDLog2(Variables vars, SPLINTER::BSpline bspline)
 {
     /*
      * Check if digit l of integer b is 1,
@@ -868,7 +868,7 @@ ConstraintPtr constraintPiecewisePolynomialDLog2(Variables vars, Splinter::BSpli
 }
 
 template <unsigned int N>
-ConstraintPtr constraintPiecewisePolynomialDLog3(Variables vars, Splinter::BSpline bspline)
+ConstraintPtr constraintPiecewisePolynomialDLog3(Variables vars, SPLINTER::BSpline bspline)
 {
     /*
      * Check if digit l of integer b is 1,
@@ -1233,7 +1233,7 @@ ConstraintPtr constraintPiecewisePolynomialDLog3(Variables vars, Splinter::BSpli
 }
 
 template <unsigned int N>
-ConstraintPtr constraintPiecewisePolynomialDLog4(Variables vars, Splinter::BSpline bspline)
+ConstraintPtr constraintPiecewisePolynomialDLog4(Variables vars, SPLINTER::BSpline bspline)
 {
     /*
      * Check if digit l of integer b is 1,
@@ -1600,7 +1600,7 @@ ConstraintPtr constraintPiecewisePolynomialDLog4(Variables vars, Splinter::BSpli
 }
 
 template <unsigned int N>
-ConstraintPtr constraintPiecewisePolynomialDLog5(Variables vars, Splinter::BSpline bspline, bool equality)
+ConstraintPtr constraintPiecewisePolynomialDLog5(Variables vars, SPLINTER::BSpline bspline, bool equality)
 {
     /*
      * Check if digit l of integer b is 1,
@@ -2021,7 +2021,7 @@ ConstraintPtr constraintPiecewisePolynomialDLog5(Variables vars, Splinter::BSpli
 }
 
 template <unsigned int N>
-ConstraintPtr constraintPiecewisePolynomialDLog6(Variables vars, Splinter::BSpline bspline, bool equality)
+ConstraintPtr constraintPiecewisePolynomialDLog6(Variables vars, SPLINTER::BSpline bspline, bool equality)
 {
     /*
      * Check if digit l of integer b is 1,
@@ -2396,7 +2396,7 @@ ConstraintPtr constraintPiecewisePolynomialDLog6(Variables vars, Splinter::BSpli
 }
 
 template <unsigned int N>
-ConstraintPtr constraintPiecewisePolynomialDLog7(Variables vars, Splinter::BSpline bspline, bool equality)
+ConstraintPtr constraintPiecewisePolynomialDLog7(Variables vars, SPLINTER::BSpline bspline, bool equality)
 {
     /*
      * Check if digit l of integer b is 1,
@@ -2762,7 +2762,7 @@ void testSplineDecomposition()
 
     auto func = [](double x, double y){ return -8*x*x*x + 8*x*x + 2 - y*y + 10*y + 5*x*y*y; };
 
-    Splinter::DataTable data;
+    SPLINTER::DataTable data;
 
     for (auto x1 : xs1)
     {
@@ -2774,7 +2774,7 @@ void testSplineDecomposition()
         }
     }
 
-    Splinter::BSpline bs(data, Splinter::BSplineType::CUBIC_FREE);
+    SPLINTER::BSpline bs(data, SPLINTER::BSplineType::CUBIC);
 
     Variables vars = {
         std::make_shared<Variable>(0),
@@ -2794,7 +2794,7 @@ unsigned int polyTest(int numSamples)
     auto func1 = [](double x) { return -2 -8*x*x +8*x*x*x -2*x*x*x*x; };
     auto func2 = [](double x) { return -36 +96*x -88*x*x +32*x*x*x -4*x*x*x*x; };
 
-    Splinter::DataTable samples1, samples2;
+    SPLINTER::DataTable samples1, samples2;
     for (const auto &xv : xs)
     {
         double y1 = func1(xv);
@@ -2804,8 +2804,8 @@ unsigned int polyTest(int numSamples)
         samples2.addSample(xv, y2);
     }
 
-    Splinter::BSpline bs1(samples1, Splinter::BSplineType::CUBIC);
-    Splinter::BSpline bs2(samples2, Splinter::BSplineType::CUBIC);
+    SPLINTER::BSpline bs1(samples1, SPLINTER::BSplineType::CUBIC);
+    SPLINTER::BSpline bs2(samples2, SPLINTER::BSplineType::CUBIC);
 
     // Create some variables
     Variables vars = {
@@ -2865,7 +2865,7 @@ void michaTest()
         vars.push_back(var);
     }
 
-    Splinter::DataTable data;
+    SPLINTER::DataTable data;
 
     auto x1v = linspace(lb.at(0), ub.at(0), 30);
     auto x2v = linspace(lb.at(1), ub.at(1), 30);
@@ -2881,7 +2881,7 @@ void michaTest()
     }
 
     // Create B-spline
-    Splinter::BSpline bs(data, Splinter::BSplineType::LINEAR);
+    SPLINTER::BSpline bs(data, SPLINTER::BSplineType::LINEAR);
 
     //ConstraintPtr con = std::make_shared<ConstraintBSpline>(vars, bs, true);
     auto con = constraintPiecewisePolynomialDLog7<2>(vars, bs);
@@ -3335,7 +3335,7 @@ void pumpSynthesis2(unsigned int grid)
                 return alpha*std::pow(w/wmax, 3) + beta*std::pow(w/wmax, 2)*v + gamma*(w/wmax)*v*v;
             };
 
-            Splinter::DataTable samples;
+            SPLINTER::DataTable samples;
 
 //            auto w = linspace(clb.at(0), cub.at(0), 10);
 //            auto v = linspace(clb.at(1), cub.at(1), 10);
@@ -3354,7 +3354,7 @@ void pumpSynthesis2(unsigned int grid)
             }
 
             // Create B-spline
-            Splinter::BSpline bs(samples, Splinter::BSplineType::LINEAR);
+            SPLINTER::BSpline bs(samples, SPLINTER::BSplineType::LINEAR);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -3421,7 +3421,7 @@ void pumpSynthesis2(unsigned int grid)
                 return a*std::pow(w/wmax, 2) + b*(w/wmax)*v + c*v*v;
             };
 
-            Splinter::DataTable samples;
+            SPLINTER::DataTable samples;
 
 //            auto w = linspace(clb.at(0), cub.at(0), 10);
 //            auto v = linspace(clb.at(1), cub.at(1), 10);
@@ -3440,7 +3440,7 @@ void pumpSynthesis2(unsigned int grid)
             }
 
             // Create B-spline
-            Splinter::BSpline bs(samples, Splinter::BSplineType::LINEAR);
+            SPLINTER::BSpline bs(samples, SPLINTER::BSplineType::LINEAR);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 

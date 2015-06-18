@@ -42,7 +42,7 @@ SparseMatrix getSelectionMatrix(unsigned int k, unsigned int degree, unsigned in
  * NOTE: Using dummy variables in the polynomial constraints.
  */
 template <unsigned int N>
-PiecewisePolynomial<N> decomposeBSplinePower(Splinter::BSpline bspline)
+PiecewisePolynomial<N> decomposeBSplinePower(SPLINTER::BSpline bspline)
 {
     assert(bspline.getNumVariables() == N);
 
@@ -190,55 +190,55 @@ PiecewisePolynomial<N> decomposeBSplinePower(Splinter::BSpline bspline)
  * DCC model with additional x_P variables
  */
 template <unsigned int N>
-ConstraintPtr constraintPiecewisePolynomialDCC(Variables vars, Splinter::BSpline bspline);
+ConstraintPtr constraintPiecewisePolynomialDCC(Variables vars, SPLINTER::BSpline bspline);
 
 /*
  * DCC model
  */
 template <unsigned int N>
-ConstraintPtr constraintPiecewisePolynomialDCC2(Variables vars, Splinter::BSpline bspline);
+ConstraintPtr constraintPiecewisePolynomialDCC2(Variables vars, SPLINTER::BSpline bspline);
 
 /*
  * DLog model with additional x_P variables
  */
 template <unsigned int N>
-ConstraintPtr constraintPiecewisePolynomialDLog(Variables vars, Splinter::BSpline bspline);
+ConstraintPtr constraintPiecewisePolynomialDLog(Variables vars, SPLINTER::BSpline bspline);
 
 /*
  * DLog model
  */
 template <unsigned int N>
-ConstraintPtr constraintPiecewisePolynomialDLog2(Variables vars, Splinter::BSpline bspline);
+ConstraintPtr constraintPiecewisePolynomialDLog2(Variables vars, SPLINTER::BSpline bspline);
 
 /*
  * DLog model basis functions
  */
 template <unsigned int N>
-ConstraintPtr constraintPiecewisePolynomialDLog3(Variables vars, Splinter::BSpline bspline);
+ConstraintPtr constraintPiecewisePolynomialDLog3(Variables vars, SPLINTER::BSpline bspline);
 
 /*
  * DLog model basis functions and McCormick
  */
 template <unsigned int N>
-ConstraintPtr constraintPiecewisePolynomialDLog4(Variables vars, Splinter::BSpline bspline);
+ConstraintPtr constraintPiecewisePolynomialDLog4(Variables vars, SPLINTER::BSpline bspline);
 
 /*
  * DLog model basis functions and McCormick
  */
 template <unsigned int N>
-ConstraintPtr constraintPiecewisePolynomialDLog5(Variables vars, Splinter::BSpline bspline, bool equality = false);
+ConstraintPtr constraintPiecewisePolynomialDLog5(Variables vars, SPLINTER::BSpline bspline, bool equality = false);
 
 /*
  * DLog model basis functions and McCormick
  */
 template <unsigned int N>
-ConstraintPtr constraintPiecewisePolynomialDLog6(Variables vars, Splinter::BSpline bspline, bool equality = false);
+ConstraintPtr constraintPiecewisePolynomialDLog6(Variables vars, SPLINTER::BSpline bspline, bool equality = false);
 
 /*
  * DLog model using basis functions and McCormick, and assuming a rectangular grid
  */
 template <unsigned int N>
-ConstraintPtr constraintPiecewisePolynomialDLog7(Variables vars, Splinter::BSpline bspline, bool equality = false);
+ConstraintPtr constraintPiecewisePolynomialDLog7(Variables vars, SPLINTER::BSpline bspline, bool equality = false);
 
 void testSplineDecomposition();
 

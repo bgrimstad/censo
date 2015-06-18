@@ -3670,7 +3670,7 @@
 
 //        for(const auto ic : indexConstraint) cout << ic << ",  "; cout << endl;
 
-//        Bspline bs(table, BsplineType::CUBIC_FREE);
+//        Bspline bs(table, BsplineType::CUBIC);
 //        for(unsigned int solnr = 0; solnr < xstar.size(); ++solnr)
 //        {
 //            std::vector<double> xtest = xstar.at(solnr);
@@ -3699,7 +3699,7 @@
 
 //        for(const auto ic : indexConstraint) cout << ic << ",  "; cout << endl;
 
-//        Bspline bs(table, BsplineType::CUBIC_FREE);
+//        Bspline bs(table, BsplineType::CUBIC);
 //        for(unsigned int solnr = 0; solnr < xstar.size(); ++solnr)
 //        {
 //            std::vector<double> xtest = xstar.at(solnr);
@@ -3808,7 +3808,7 @@
 //            std::vector<double> xtest = {0.89999,0.44999,1.00001,7.99997,5.00003,0.99999};
 //            //            for(const auto it : indexTable) xtest.push_back( xstar.at(it) );
 //            cout << "C1: k = " << k << "\t fun(xtest) = " << fun(xtest) << endl;
-//            Bspline bs(table, BsplineType::CUBIC_FREE);
+//            Bspline bs(table, BsplineType::CUBIC);
 //            cc->add({new ConstraintBspline(bs, true)}, indexConstraint);
 //        }
 //    }
@@ -3846,7 +3846,7 @@
 //            for(const auto it : indexTable) xtest.push_back( xstar.at(it) );
 //            //            for(const auto ic : indexConstraint) cout << ic << ",  "; cout << endl;
 //            cout << "C2: k = " << k << "\t fun(xtest) = " << fun(xtest) << endl;
-//            Bspline bs(table, BsplineType::CUBIC_FREE);
+//            Bspline bs(table, BsplineType::CUBIC);
 //            cc->add({new ConstraintBspline(bs, true)}, indexConstraint);
 //        }
 //    }
@@ -3992,7 +3992,7 @@
 
 //            for(const auto ic : indexConstraint) cout << ic << ",  "; cout << endl;
 
-//            Bspline bs(table, BsplineType::CUBIC_FREE);
+//            Bspline bs(table, BsplineType::CUBIC);
 //            for(unsigned int solnr = 0; solnr < Tstar.size(); ++solnr)
 //            {
 //                std::vector<double> xtest = xstar.at(solnr);

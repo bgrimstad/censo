@@ -23,7 +23,7 @@ namespace CENSO
  * Examples used in the JOGO paper.
  */
 
-void saveDataTable(Splinter::DataTable &data, std::string filename);
+void saveDataTable(SPLINTER::DataTable &data, std::string filename);
 void sampleMichalewicz();
 
 void samplePump();

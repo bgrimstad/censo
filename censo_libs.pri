@@ -14,7 +14,7 @@ INCLUDEPATH += /home/bjarne/Solvers/Gurobi/gurobi600/linux64/include
 # Eigen library
 INCLUDEPATH += /home/bjarne/C++/libs/eigen-3.2.4
 
-# Splinter library
+# SPLINTER library
 LIBS += -L/home/bjarne/C++/splinter/splinter/build/lib -lsplinter-1-2
 INCLUDEPATH += /home/bjarne/C++/splinter/splinter/build/include
 

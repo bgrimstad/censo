@@ -17,9 +17,9 @@
 using std::cout;
 using std::endl;
 
-using Splinter::BSpline;
-using Splinter::DataTable;
-using Splinter::BSplineType;
+using SPLINTER::BSpline;
+using SPLINTER::DataTable;
+using SPLINTER::BSplineType;
 
 namespace CENSO
 {
@@ -93,7 +93,7 @@ void Michalewicz::runProblem()
 //        cout << "B-spline is NOT very accurate:(" << endl;
 //    }
 
-    BSpline bs(data, BSplineType::CUBIC_FREE);
+    BSpline bs(data, BSplineType::CUBIC);
     auto constraint = std::make_shared<ConstraintBSpline>(vars, bs, false);
 
     //SolverIpopt solver(constraint);

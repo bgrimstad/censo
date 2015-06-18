@@ -22,9 +22,9 @@
 
 using std::cout;
 using std::endl;
-using Splinter::BSpline;
-using Splinter::BSplineType;
-using Splinter::DataTable;
+using SPLINTER::BSpline;
+using SPLINTER::BSplineType;
+using SPLINTER::DataTable;
 
 namespace CENSO
 {
@@ -104,7 +104,7 @@ void sampleMichalewicz()
     }
 
     // Create B-spline
-    BSpline bs(data, BSplineType::CUBIC_FREE);
+    BSpline bs(data, BSplineType::CUBIC);
 
     // Error
     DataTable error;
@@ -227,8 +227,8 @@ void samplePump()
     }
 
     // Create B-spline
-    BSpline bspline_pow(data_pow, BSplineType::QUADRATIC_FREE);
-    BSpline bspline_dp(data_pres, BSplineType::QUADRATIC_FREE);
+    BSpline bspline_pow(data_pow, BSplineType::QUADRATIC);
+    BSpline bspline_dp(data_pres, BSplineType::QUADRATIC);
 
     // Error
     DataTable error_pow;
@@ -790,7 +790,7 @@ void pumpSynthesis(unsigned int grid)
             }
 
             // Create B-spline
-            BSpline bs(samples, BSplineType::CUBIC_FREE);
+            BSpline bs(samples, BSplineType::CUBIC);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -874,7 +874,7 @@ void pumpSynthesis(unsigned int grid)
             }
 
             // Create B-spline
-            BSpline bs(samples, BSplineType::CUBIC_FREE);
+            BSpline bs(samples, BSplineType::CUBIC);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -2383,7 +2383,7 @@ void cubicSpline()
 
     //table.printTable();
 
-    BSpline bs(table, BSplineType::CUBIC_FREE);
+    BSpline bs(table, BSplineType::CUBIC);
 
     // Add knots
     bs.insertKnots(1,0);

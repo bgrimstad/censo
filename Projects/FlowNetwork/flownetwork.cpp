@@ -16,7 +16,7 @@
 
 using std::cout;
 using std::endl;
-using Splinter::BSplineType;
+using SPLINTER::BSplineType;
 
 namespace FlowNetwork
 {
@@ -203,7 +203,7 @@ bool FlowNetworkProblem::addConstraintWPC(g_id from, g_id to, const DataTable &s
     vars.push_back(pi);
     vars.push_back(qoil);
 
-    BSpline bs(samples, BSplineType::CUBIC_FREE); // LINEAR
+    BSpline bs(samples, BSplineType::CUBIC); // LINEAR
     ConstraintPtr con = std::make_shared<ConstraintBSpline>(vars, bs, true);
     std::ostringstream cname;
     cname << "WPC, edge (" << edge->from->id << "," << edge->to->id << ")";
@@ -240,7 +240,7 @@ bool FlowNetworkProblem::addConstraintWPC2(g_id from, g_id to, const DataTable &
     vars_rate.push_back(p_to);
     vars_rate.push_back(qoil);
 
-    BSpline bs_rate(pwhToQoil, BSplineType::CUBIC_FREE);
+    BSpline bs_rate(pwhToQoil, BSplineType::CUBIC);
     ConstraintPtr con_rate = std::make_shared<ConstraintBSpline>(vars_rate, bs_rate, true);
     std::ostringstream cname_rate;
     cname_rate << "WPC rate, edge (" << from << "," << to << ")";
@@ -253,7 +253,7 @@ bool FlowNetworkProblem::addConstraintWPC2(g_id from, g_id to, const DataTable &
     vars_pres.push_back(p_to);
     vars_pres.push_back(p_from);
 
-    BSpline bs_pres(pwhToPbh, BSplineType::CUBIC_FREE);
+    BSpline bs_pres(pwhToPbh, BSplineType::CUBIC);
     ConstraintPtr con_pres = std::make_shared<ConstraintBSpline>(vars_pres, bs_pres, true);
     std::ostringstream cname_pres;
     cname_pres << "WPC pres, edge (" << from << "," << to << ")";
@@ -315,7 +315,7 @@ bool FlowNetworkProblem::addConstraintTemperature(g_id from, g_id to, const Data
         vars.push_back(pres_to);
         vars.push_back(temp_ds);
 
-        BSpline bs(pwhToTwh, BSplineType::CUBIC_FREE);
+        BSpline bs(pwhToTwh, BSplineType::CUBIC);
         ConstraintPtr con = std::make_shared<ConstraintBSpline>(vars, bs, true);
         std::ostringstream cname;
         cname << "WPC temp, edge (" << from << "," << to << ")";
@@ -413,7 +413,7 @@ bool FlowNetworkProblem::addConstraintFlowlineVLPTemp(g_id from, g_id to, const 
     // This order is fixed
     std::vector<VariablePtr> vars = {qliq, from_pres, gor, wct, temp, temp_diff};
 
-    BSpline bs(samples, BSplineType::LINEAR); // CUBIC_FREE
+    BSpline bs(samples, BSplineType::LINEAR); // CUBIC
     ConstraintPtr con = std::make_shared<ConstraintBSpline>(vars, bs, true);
     std::ostringstream cname;
     cname << "Pressure correlation, edge (" << edge->from->id << "," << edge->to->id << ")";
@@ -557,7 +557,7 @@ bool FlowNetworkProblem::addConstraintVelocity(g_id from, g_id to, const DataTab
     // Constraint variables
     std::vector<VariablePtr> vars = {to_pres, to_temp, qliq, gor, wct, vel};
 
-    BSpline bs(samples, BSplineType::LINEAR); // CUBIC_FREE
+    BSpline bs(samples, BSplineType::LINEAR); // CUBIC
     ConstraintPtr con = std::make_shared<ConstraintBSpline>(vars, bs, true);
     std::ostringstream cname;
     cname << "Velocity constraint, edge (" << edge->from->id << "," << edge->to->id << ")";

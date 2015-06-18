@@ -21,9 +21,9 @@
 using std::cout;
 using std::endl;
 
-using Splinter::DataTable;
-using Splinter::BSpline;
-using Splinter::BSplineType;
+using SPLINTER::DataTable;
+using SPLINTER::BSpline;
+using SPLINTER::BSplineType;
 
 constexpr double pi()
 {
