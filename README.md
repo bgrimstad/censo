@@ -10,3 +10,14 @@ CENSO is a framework for global optimization of nonconvex, possibly spline-const
 
 ### Notes:
 * The code examples in the user guide (Docs/UserGuide/manual.pdf) are currently outdated. Refer to the test problems (TestProblems/*) for examples on how to create and solve optimization problems.
+
+### Reference:
+If you use CENSO in a scientific work we kindly ask you to cite it. You can cite it as shown in the bibtex entry below (remember to update the date accessed).
+```
+@article{Grimstad2015,
+author = {Grimstad, B. and Sandnes, A.},
+journal = {To appear in Journal of Global Optimization},
+title = {{Global optimization with spline constraints: a new branch-and-bound method based on B-splines}},
+year = {2015}
+}
+```
