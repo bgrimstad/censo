@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     CENSO::POP13 p13; p13.run();
 
     timer.stop();
-    std::cout << "Total time: " << timer.getMilliSeconds() << " sec" << std::endl;
+    std::cout << "Total time: " << timer.getMilliSeconds() << " msec" << std::endl;
 
     return 0;
 }
