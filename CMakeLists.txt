@@ -22,7 +22,7 @@ set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE})
 # Include directories
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Thirdparty/Eigen)
-include_directories(/home/bjarne/Code/C++/splinter/splinter/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Thirdparty/splinter/include)
 include_directories(/home/bjarne/Solvers/Gurobi/gurobi605/linux64/include)
 include_directories(/home/bjarne/Solvers/Bonmin/Bonmin-1.7.5/build/include/coin)
 
@@ -35,7 +35,7 @@ link_directories(/lib)
 
 # Gurobi and SPLINTER link directories
 link_directories(/home/bjarne/Solvers/Gurobi/gurobi605/linux64/lib)
-link_directories(/home/bjarne/Code/C++/splinter/splinter/build/)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/Thirdparty/splinter/)
 
 # These are the sources we need for compilation of the library
 set(SRC_LIST
