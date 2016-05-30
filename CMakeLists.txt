@@ -76,10 +76,7 @@ set(SRC_LIST
     BranchAndBound/BoundsTightening/boundstightener.h
     BranchAndBound/BoundsTightening/obbt.h
     BranchAndBound/BoundsTightening/fbbt.h
-    Projects/JOGO/jogoexamples.h
-    Projects/FlowNetwork/graph.h
-    Projects/FlowNetwork/flownetwork.h
-    Projects/FlowNetwork/flownetworkdata.h
+    TestProblems/jogoexamples.h
     TestProblems/testproblem.h
     TestProblems/alltestproblems.h
     TestProblems/pop01.h
@@ -138,8 +135,7 @@ set(SRC_LIST
     BranchAndBound/Branching/brancheradmin.cpp
     BranchAndBound/BoundsTightening/obbt.cpp
     BranchAndBound/BoundsTightening/fbbt.cpp
-    Projects/JOGO/jogoexamples.cpp
-    Projects/FlowNetwork/flownetwork.cpp
+    TestProblems/jogoexamples.cpp
     TestProblems/testproblem.cpp
     TestProblems/pop01.cpp
     TestProblems/pop02.cpp
