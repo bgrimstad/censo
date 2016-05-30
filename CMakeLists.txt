@@ -77,11 +77,6 @@ set(SRC_LIST
     BranchAndBound/BoundsTightening/obbt.h
     BranchAndBound/BoundsTightening/fbbt.h
     Projects/JOGO/jogoexamples.h
-    Projects/PWL/point.h
-    Projects/PWL/polytope.h
-    Projects/PWL/pwlmodels.h
-    Projects/PWL/triangulation.h
-    Projects/PWL/pwpmodels.h
     Projects/FlowNetwork/graph.h
     Projects/FlowNetwork/flownetwork.h
     Projects/FlowNetwork/flownetworkdata.h
@@ -110,7 +105,6 @@ set(SRC_LIST
     TestProblems/asaadi1.h
     TestProblems/linearintervalanalysistest.h
     Test/unittests.h
-    OptimizationProblem/constraintapproximant.h    
     Utils/definitions.cpp
     Utils/metrics.cpp
     Utils/linearinterpolation.cpp
@@ -145,8 +139,6 @@ set(SRC_LIST
     BranchAndBound/BoundsTightening/obbt.cpp
     BranchAndBound/BoundsTightening/fbbt.cpp
     Projects/JOGO/jogoexamples.cpp
-    Projects/PWL/pwlmodels.cpp
-    Projects/PWL/pwpmodels.cpp
     Projects/FlowNetwork/flownetwork.cpp
     TestProblems/testproblem.cpp
     TestProblems/pop01.cpp
@@ -173,7 +165,6 @@ set(SRC_LIST
     TestProblems/linearintervalanalysistest.cpp
     Test/testproblems.cpp
     Test/unittests.cpp
-    OptimizationProblem/constraintapproximant.cpp
     main.cpp
 )
 
