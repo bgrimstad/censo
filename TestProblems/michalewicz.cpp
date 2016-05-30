@@ -40,13 +40,11 @@ Michalewicz::Michalewicz()
     fopt_known = -1.8013;
 }
 
-DenseVector Michalewicz::michalewiczFunction(DenseVector x)
+double Michalewicz::michalewiczFunction(DenseVector x, unsigned int m = 10)
 {
     assert(x.rows() == 2);
     double pi = atan(1)*4;
-    DenseVector y; y.setZero(1);
-    y(0) = -sin(x(0))*pow(sin(x(0)*x(0)/pi), 20) -sin(x(1))*pow(sin(2*x(1)*x(1)/pi), 20);
-    return y;
+    return -sin(x(0))*pow(sin(x(0)*x(0)/pi), 2*m) -sin(x(1))*pow(sin(2*x(1)*x(1)/pi), 2*m);
 }
 
 void Michalewicz::runProblem()
@@ -65,17 +63,17 @@ void Michalewicz::runProblem()
 
     DataTable data;
 
-    double dx = 0.05;
-    for (double x1 = 0; x1 <= pi; x1+=dx)
+    unsigned int nums = 10; // 60x60 yields is sufficient to model function around optimum
+    auto x1 = linspace(0, 4, nums);
+    auto x2 = linspace(0, 4, nums);
+
+    for (auto x1i : x1)
     {
-        for (double x2 = 0; x2 <= pi; x2+=dx)
+        for (auto x2i : x2)
         {
-            std::vector<double> x = {x1, x2};
-
-            DenseVector xd(2); xd << x1, x2;
-            DenseVector yd = michalewiczFunction(xd);
-
-            data.addSample(x,yd(0));
+            DenseVector xd(2); xd << x1i, x2i;
+            double yd = michalewiczFunction(xd);
+            data.addSample(xd, yd);
         }
     }
 
@@ -113,9 +111,7 @@ void Michalewicz::runProblem()
 bool Michalewicz::validateResult()
 {
     // Test if problem is solved maybe
-    if (std::abs(fopt_found - fopt_known) <= 1e-3)
-        return true;
-    return false;
+    return std::abs(fopt_found - fopt_known) <= 1e-3;
 }
 
 } // namespace CENSO

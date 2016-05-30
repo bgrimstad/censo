@@ -41,12 +41,11 @@ SixHumpCamel::SixHumpCamel()
     fopt_known = -1.031628453;
 }
 
-DenseVector SixHumpCamel::sixHumpCamelFunction(DenseVector x)
+double SixHumpCamel::sixHumpCamelFunction(DenseVector x)
 {
     assert(x.rows() == 2);
     DenseVector y; y.setZero(1);
-    y(0) = (4 - 2.1*x(0)*x(0) + (1/3.)*x(0)*x(0)*x(0)*x(0))*x(0)*x(0) + x(0)*x(1) + (-4 + 4*x(1)*x(1))*x(1)*x(1);
-    return y;
+    return (4 - 2.1*x(0)*x(0) + (1/3.)*x(0)*x(0)*x(0)*x(0))*x(0)*x(0) + x(0)*x(1) + (-4 + 4*x(1)*x(1))*x(1)*x(1);
 }
 
 void SixHumpCamel::runProblem()
@@ -66,21 +65,18 @@ void SixHumpCamel::runProblem()
 
     DataTable data;
 
-    double dx = 0.05;
-    for (double x1 = lb.at(0); x1 <= ub.at(0); x1+=dx)
+    unsigned int nums = 20;
+    auto x1 = linspace(lb.at(0), ub.at(0), nums);
+    auto x2 = linspace(lb.at(1), ub.at(1), nums);
+
+    for (auto x1i : x1)
     {
-        for (double x2 = lb.at(1); x2 <= ub.at(1); x2+=dx)
+        for (auto x2i : x2)
         {
-            std::vector<double> x;
-            x.push_back(x1);
-            x.push_back(x2);
+            DenseVector xd(2); xd << x1i, x2i;
+            double yd = sixHumpCamelFunction(xd);
 
-            DenseVector xd; xd.setZero(2);
-            xd(0) = x1;
-            xd(1) = x2;
-            DenseVector yd = sixHumpCamelFunction(xd);
-
-            data.addSample(x,yd(0));
+            data.addSample(xd, yd);
         }
     }
 
@@ -127,11 +123,8 @@ void SixHumpCamel::runProblem()
 
 bool SixHumpCamel::validateResult()
 {
-    // Test if problem is solved maybe
-    if (std::abs(fopt_found - fopt_known) <= 1e-3)
-        return true;
-
-    return false;
+    // Test if problem is solved (flag)
+    return std::abs(fopt_found - fopt_known) <= 1e-3;
 }
 
 } // namespace CENSO

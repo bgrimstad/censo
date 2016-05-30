@@ -30,7 +30,7 @@ protected:
     virtual bool validateResult();
 
 private:
-    static DenseVector sixHumpCamelFunction(DenseVector x); // Static allows for function pointers
+    static double sixHumpCamelFunction(DenseVector x); // Static allows for function pointers
 
     std::vector<double> zopt_known; // The known optimal point of the problem
     std::vector<double> zopt_found; // The optimal point found by the optimizer
