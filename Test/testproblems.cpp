@@ -175,7 +175,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -203,7 +203,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -276,7 +276,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -303,7 +303,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -329,7 +329,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -355,7 +355,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -381,7 +381,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -463,7 +463,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -490,7 +490,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -567,7 +567,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -643,7 +643,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -670,7 +670,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -758,7 +758,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -792,7 +792,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -867,7 +867,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -890,7 +890,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -987,7 +987,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1088,7 +1088,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1127,7 +1127,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1179,7 +1179,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1274,7 +1274,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1358,7 +1358,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1436,7 +1436,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1462,7 +1462,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1488,7 +1488,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1514,7 +1514,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1540,7 +1540,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1566,7 +1566,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1592,7 +1592,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1618,7 +1618,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1723,7 +1723,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1750,7 +1750,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1858,7 +1858,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1892,7 +1892,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1922,7 +1922,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1956,7 +1956,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -1990,7 +1990,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2084,7 +2084,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2111,7 +2111,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2242,7 +2242,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2272,7 +2272,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2302,7 +2302,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2334,7 +2334,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2366,7 +2366,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2400,7 +2400,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2434,7 +2434,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2460,7 +2460,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2563,7 +2563,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2602,7 +2602,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2634,7 +2634,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2666,7 +2666,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2696,7 +2696,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2726,7 +2726,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2756,7 +2756,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2786,7 +2786,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2816,7 +2816,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2846,7 +2846,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2876,7 +2876,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2911,7 +2911,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2941,7 +2941,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -2976,7 +2976,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -3002,7 +3002,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -3111,7 +3111,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -3150,7 +3150,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -3182,7 +3182,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -3214,7 +3214,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -3244,7 +3244,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -3274,7 +3274,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -3304,7 +3304,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -3334,7 +3334,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -3364,7 +3364,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -3394,7 +3394,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -3424,7 +3424,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -3459,7 +3459,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -3489,7 +3489,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -3524,7 +3524,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 
@@ -3550,7 +3550,7 @@
 
 //        std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-//        Bspline bs(coeffs.transpose(), knots, deg);
+//        Bspline bs(coeffs, knots, deg);
 
 //        ConstraintPtr cbs(new ConstraintBspline(bs,true));
 

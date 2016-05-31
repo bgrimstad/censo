@@ -134,9 +134,7 @@ void BilinearRelaxationTest::runProblem()
 bool BilinearRelaxationTest::validateResult()
 {
     // Test if problem is solved maybe
-    if (std::abs(fopt_found - fopt_known) <= 1e-3)
-        return true;
-    return false;
+    return std::abs(fopt_found - fopt_known) <= 1e-3;
 }
 
 } // namespace CENSO

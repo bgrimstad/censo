@@ -667,7 +667,7 @@ void pumpSynthesis(unsigned int grid)
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, clb, cub);
 
-            BSpline bs(coeffs.transpose(), knots, deg);
+            BSpline bs(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -703,7 +703,7 @@ void pumpSynthesis(unsigned int grid)
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, clb, cub);
 
-            BSpline bs(coeffs.transpose(), knots, deg);
+            BSpline bs(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -741,7 +741,7 @@ void pumpSynthesis(unsigned int grid)
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, clb, cub);
 
-            BSpline bs(coeffs.transpose(), knots, deg);
+            BSpline bs(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -825,7 +825,7 @@ void pumpSynthesis(unsigned int grid)
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, clb, cub);
 
-            BSpline bs(coeffs.transpose(), knots, deg);
+            BSpline bs(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -907,7 +907,7 @@ void pumpSynthesis(unsigned int grid)
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, clb, cub);
 
-            BSpline bs(coeffs.transpose(), knots, deg);
+            BSpline bs(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -943,7 +943,7 @@ void pumpSynthesis(unsigned int grid)
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, clb, cub);
 
-            BSpline bs(coeffs.transpose(), knots, deg);
+            BSpline bs(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -1150,7 +1150,7 @@ void optControl1()
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, lb, ub);
 
-            BSpline bs(coeffs.transpose(), knots, deg);
+            BSpline bs(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -1202,7 +1202,7 @@ void optControl1()
 
                     std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, lb, ub);
 
-                    BSpline bs(coeffs.transpose(), knots, deg);
+                    BSpline bs(coeffs, knots, deg);
 
                     ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -1340,7 +1340,7 @@ void optControl2()
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, lb, ub);
 
-            BSpline bs(coeffs.transpose(), knots, deg);
+            BSpline bs(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -1474,7 +1474,7 @@ void optControl3()
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, lb, ub);
 
-            BSpline bs(coeffs.transpose(), knots, deg);
+            BSpline bs(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -1523,7 +1523,7 @@ void optControl3()
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, lb, ub);
 
-            BSpline bs(coeffs.transpose(), knots, deg);
+            BSpline bs(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -1595,7 +1595,7 @@ void Ptest()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs.transpose(), knots, deg);
+        BSpline bs(coeffs, knots, deg);
 
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -1620,7 +1620,7 @@ void Ptest()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs.transpose(), knots, deg);
+        BSpline bs(coeffs, knots, deg);
 
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -1645,7 +1645,7 @@ void Ptest()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs.transpose(), knots, deg);
+        BSpline bs(coeffs, knots, deg);
 
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -1721,7 +1721,7 @@ void polynomialOptimization()
         cout << ks;
     }
 
-    BSpline bs(coeffs.transpose(), knots, degrees);
+    BSpline bs(coeffs, knots, degrees);
 
     ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(vars, bs, true);
 
@@ -1789,7 +1789,7 @@ void sixHumpCamelBackPoly()
 
 //    printVector(knots);
 
-    BSpline bs(coeffs.transpose(), knots, deg);
+    BSpline bs(coeffs, knots, deg);
 
     ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(vars, bs, true);
 
@@ -1871,7 +1871,7 @@ void sixHumpCamelBackPoly2()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, lb, ub);
 
-        BSpline bs(coeffs.transpose(), knots, deg);
+        BSpline bs(coeffs, knots, deg);
 
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -2335,7 +2335,7 @@ void sixHumpCamelBackPoly2()
 
 void subdivision_example()
 {
-    DenseMatrix coeffs(1,3);
+    DenseVector coeffs(3);
     coeffs << 1, -1, 1;
     std::vector<double> knots = {0,0,0,1,1,1};
     std::vector<unsigned int> degrees = {2};
