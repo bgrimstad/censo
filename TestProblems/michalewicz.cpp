@@ -8,7 +8,6 @@
 */
 
 #include "michalewicz.h"
-
 #include "datatable.h"
 #include "OptimizationProblem/constraintbspline.h"
 #include "SolverInterface/solveripopt.h"
@@ -19,7 +18,6 @@ using std::endl;
 
 using SPLINTER::BSpline;
 using SPLINTER::DataTable;
-using SPLINTER::BSplineType;
 
 namespace CENSO
 {
@@ -91,7 +89,7 @@ void Michalewicz::runProblem()
 //        cout << "B-spline is NOT very accurate:(" << endl;
 //    }
 
-    BSpline bs(data, BSplineType::CUBIC);
+    BSpline bs = BSpline::Builder(data).degree(3).build();
     auto constraint = std::make_shared<ConstraintBSpline>(vars, bs, false);
 
     //SolverIpopt solver(constraint);

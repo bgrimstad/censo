@@ -11,7 +11,7 @@
 #define CONSTRAINTBSPLINE_H
 
 #include "constraint.h"
-#include "bspline.h"
+#include "bsplinebuilder.h"
 
 using SPLINTER::BSpline;
 
@@ -67,6 +67,8 @@ private:
     int maxNumAuxiliaryVariables;
 
     // Related to variable bounds check
+    // NOTE: control point matrix is assumed to be R^(m x (n + 1)),
+    // with m = number of control points and n = number of variables (x)
     DenseMatrix controlPoints;
     std::vector<Variable> storedVariables;
 

@@ -12,6 +12,14 @@
 
 int main(int argc, char *argv[])
 {
+//    CENSO::Michalewicz mic;
+//    mic.run();
+
+//    CENSO::SixHumpCamel six;
+//    six.run();
+//
+//    exit(0);
+
     CENSO::Timer timer;
     timer.start();
 

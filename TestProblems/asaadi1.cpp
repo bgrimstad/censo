@@ -166,9 +166,9 @@ void Asaadi1::runProblem()
     cout << constraints->isConstraintConvex() << endl;
 
     if (!constraints->isConstraintConvex())
-        cout << "NOOOOOOOOOOOOOT CONVEEEEEEEEEEEEEEEX!!!!!!!!!!" << endl;
+        cout << "NOT CONVEX!" << endl;
     else
-        cout << "CONVEEEEEEEEEEEEEEEX!!!!!!!!!!" << endl;
+        cout << "CONVEX!" << endl;
     constraints->writeToGAMS("asaadi.gms");
 
     //SolverBonmin solver(constraints);
@@ -185,14 +185,7 @@ void Asaadi1::runProblem()
 bool Asaadi1::validateResult()
 {
     // Test if problem is solved maybe
-    if (std::abs(fopt_found - fopt_known) <= 1e-3)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return std::abs(fopt_found - fopt_known) <= 1e-3;
 }
 
 } // namespace CENSO

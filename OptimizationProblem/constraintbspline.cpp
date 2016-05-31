@@ -12,6 +12,7 @@
 #include "constraintset.h"
 //#include "SolverInterface/solveripopt.h"
 #include "unsupported/Eigen/KroneckerProduct"
+#include "Utils/timer.h"
 
 using std::cout;
 using std::endl;
@@ -90,7 +91,7 @@ void ConstraintBSpline::init(bool equality)
     constraintName = "B-spline";
 
     // Get B-spline control points
-    controlPoints = bspline.getControlPoints();
+    controlPoints = bspline.getControlPoints().transpose();
 
     // Update bounds
     reduceVariableRanges();
@@ -104,8 +105,8 @@ DenseVector ConstraintBSpline::eval(const DenseVector &x) const
     DenseVector xy = x;
     DenseVector xa = adjustToDomainBounds(x);
 
-    DenseVector xx = xa.block(0,0,variables.size()-numConstraints,1);
-    DenseVector yy = xy.block(variables.size()-numConstraints,0,numConstraints,1);
+    DenseVector xx = xa.block(0, 0, variables.size()-numConstraints, 1);
+    DenseVector yy = xy.block(variables.size()-numConstraints, 0, numConstraints, 1);
 
     double by = bspline.eval(xx);
 
@@ -133,7 +134,7 @@ DenseVector ConstraintBSpline::evalJacobian(const DenseVector &x) const
     //return centralDifference(xa);
 
     // Get x-values
-    DenseVector xx = xa.block(0,0,bspline.getNumVariables(),1);
+    DenseVector xx = xa.block(0, 0, bspline.getNumVariables(), 1);
 
     // Evaluate B-spline Jacobian
     DenseMatrix jac = bspline.evalJacobian(xx);
@@ -163,7 +164,7 @@ DenseVector ConstraintBSpline::evalHessian(const DenseVector &x) const
     DenseVector ddx = DenseVector::Zero(nnzHessian);
 
     // Get x-values
-    DenseVector xx = xa.block(0,0,bspline.getNumVariables(),1);
+    DenseVector xx = xa.block(0, 0, bspline.getNumVariables(), 1);
 
     // Calculate Hessian
     DenseMatrix H = bspline.evalHessian(xx);
@@ -272,6 +273,8 @@ ConstraintPtr ConstraintBSpline::getConvexRelaxation()
 
 void ConstraintBSpline::reduceBSplineDomain()
 {
+    Timer t; t.start();
+
     std::vector<double> varlb, varub;
     for (unsigned int i = 0; i < bspline.getNumVariables(); i++)
     {
@@ -305,21 +308,34 @@ void ConstraintBSpline::reduceBSplineDomain()
     }
 
     // Reduce domain of B-spline
-    bspline.reduceDomain(varlb, varub);
+    bspline.reduceSupport(varlb, varub);
+
+    t.stop();
+    std::cout << "Reduce domain: " << t.getMicroSeconds() << std::endl;
+    t.start();
 
     // Refinement for low dimensional B-spline
     //if (bspline.getNumVariables() <= 2)
         bspline.globalKnotRefinement();
 
+    t.stop();
+    std::cout << "Refinement: " << t.getMicroSeconds() << std::endl;
+    t.start();
+
     // Update control points
-    controlPoints = bspline.getControlPoints();
+    controlPoints = bspline.getControlPoints().transpose();
+
+    t.stop();
+    std::cout << "Transpose: " << t.getMicroSeconds() << std::endl;
+    // Transpose is the sinner!!! Need to rewrite constraint class to store as in SPLINTER
+
 }
 
 void ConstraintBSpline::localRefinement(const DenseVector &x)
 {
     DenseVector xadj = adjustToDomainBounds(x);
     bspline.localKnotRefinement(xadj);
-    controlPoints = bspline.getControlPoints();
+    controlPoints = bspline.getControlPoints().transpose();
 }
 
 ConstraintPtr ConstraintBSpline::computeRelaxationHyperrectangle()
@@ -388,7 +404,7 @@ ConstraintPtr ConstraintBSpline::computeRelaxationConvexHull()
     DenseMatrix ones;
     ones.setOnes(1,colsC);
 
-    DenseMatrix A(rowsA,colsA);
+    DenseMatrix A(rowsA, colsA);
     A.block(0,     0,     rowsC, rowsC) = I;
     A.block(0,     rowsC, rowsC, colsC) = -controlPoints;
     A.block(rowsC, 0,     1,     rowsC) = zeros;
@@ -482,7 +498,7 @@ bool ConstraintBSpline::controlPointBoundsDeduction() const
 
     // Compute n value for each variable
     // Total number of control points is ns(0)*...*ns(d-1)
-    std::vector<unsigned int> numBasisFunctions = bspline.getNumBasisFunctions();
+    std::vector<unsigned int> numBasisFunctions = bspline.getNumBasisFunctionsPerVariable();
 
     // Get matrix of coefficients
     DenseMatrix cps = controlPoints;
@@ -511,7 +527,7 @@ bool ConstraintBSpline::controlPointBoundsDeduction() const
             {
                 DenseMatrix temp(S);
 
-                DenseMatrix Sd_full = DenseMatrix::Identity(numBasisFunctions.at(d2),numBasisFunctions.at(d2));
+                DenseMatrix Sd_full = DenseMatrix::Identity(numBasisFunctions.at(d2), numBasisFunctions.at(d2));
                 DenseMatrix Sd(Sd_full);
                 if (d == d2)
                     Sd = Sd_full.block(0,0,n,i);
@@ -553,7 +569,7 @@ bool ConstraintBSpline::controlPointBoundsDeduction() const
             {
                 DenseMatrix temp(S);
 
-                DenseMatrix Sd_full = DenseMatrix::Identity(numBasisFunctions.at(d2),numBasisFunctions.at(d2));
+                DenseMatrix Sd_full = DenseMatrix::Identity(numBasisFunctions.at(d2), numBasisFunctions.at(d2));
                 DenseMatrix Sd(Sd_full);
                 if (d == d2)
                     Sd = Sd_full.block(0,n-i,n,i);

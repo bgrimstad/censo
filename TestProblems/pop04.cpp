@@ -89,7 +89,7 @@ void POP04::runProblem()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs.transpose(), knots, deg);
+        BSpline bs(coeffs, knots, deg);
 
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -130,9 +130,7 @@ void POP04::runProblem()
 
 bool POP04::validateResult()
 {
-    if (std::abs(fopt_found - fopt_known) <= 1e-3)
-        return true;
-    return false;
+    return std::abs(fopt_found - fopt_known) <= 1e-3;
 }
 
 } // namespace CENSO

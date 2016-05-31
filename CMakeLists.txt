@@ -23,7 +23,7 @@ set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Thirdparty/Eigen)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Thirdparty/splinter/include)
-include_directories(/home/bjarne/Solvers/Gurobi/gurobi605/linux64/include)
+include_directories(/home/bjarne/Solvers/Gurobi/gurobi651/linux64/include)
 include_directories(/home/bjarne/Solvers/Bonmin/Bonmin-1.7.5/build/include/coin)
 
 # Bonmin and Ipopt link directories
@@ -34,7 +34,7 @@ link_directories(/usr/lib)
 link_directories(/lib)
 
 # Gurobi and SPLINTER link directories
-link_directories(/home/bjarne/Solvers/Gurobi/gurobi605/linux64/lib)
+link_directories(/home/bjarne/Solvers/Gurobi/gurobi651/linux64/lib)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/Thirdparty/splinter/)
 
 # These are the sources we need for compilation of the library
@@ -167,4 +167,4 @@ set(SRC_LIST
 # Testing executable
 set(TEST "${PROJECT_NAME_LOWER}-test")
 add_executable(${TEST} ${SRC_LIST})
-target_link_libraries(${TEST} bonmin ipopt Cbc Cgl OsiClp Osi Clp CoinUtils dl coinhsl coinlapack coinblas gfortran m quadmath z gurobi_c++ gurobi60 splinter-1-4)
+target_link_libraries(${TEST} bonmin ipopt Cbc Cgl OsiClp Osi Clp CoinUtils dl coinhsl coinlapack coinblas gfortran m quadmath z gurobi_c++ gurobi65 splinter-3-1)

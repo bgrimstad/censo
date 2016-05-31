@@ -14,8 +14,7 @@
 #include "OptimizationProblem/constraintquadratic.h"
 #include "OptimizationProblem/constraintpolynomial.h"
 #include "Utils/bsplinepoly.h"
-#include "bspline.h"
-#include "datatable.h"
+#include "bsplinebuilder.h"
 #include "BranchAndBound/branchandbound.h"
 #include "SolverInterface/solvergurobi.h"
 #include "SolverInterface/solveripopt.h"
@@ -23,7 +22,6 @@
 using std::cout;
 using std::endl;
 using SPLINTER::BSpline;
-using SPLINTER::BSplineType;
 using SPLINTER::DataTable;
 
 namespace CENSO
@@ -104,7 +102,7 @@ void sampleMichalewicz()
     }
 
     // Create B-spline
-    BSpline bs(data, BSplineType::CUBIC);
+    BSpline bs = BSpline::Builder(data).degree(3).build(); //(data, BSplineType::CUBIC);
 
     // Error
     DataTable error;
@@ -227,8 +225,8 @@ void samplePump()
     }
 
     // Create B-spline
-    BSpline bspline_pow(data_pow, BSplineType::QUADRATIC);
-    BSpline bspline_dp(data_pres, BSplineType::QUADRATIC);
+    BSpline bspline_pow = BSpline::Builder(data_pow).degree(2).build();
+    BSpline bspline_dp = BSpline::Builder(data_pres).degree(2).build();
 
     // Error
     DataTable error_pow;
@@ -790,7 +788,7 @@ void pumpSynthesis(unsigned int grid)
             }
 
             // Create B-spline
-            BSpline bs(samples, BSplineType::CUBIC);
+            BSpline bs = BSpline::Builder(samples).degree(3).build();
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -874,7 +872,7 @@ void pumpSynthesis(unsigned int grid)
             }
 
             // Create B-spline
-            BSpline bs(samples, BSplineType::CUBIC);
+            BSpline bs = BSpline::Builder(samples).degree(3).build();
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -2383,7 +2381,7 @@ void cubicSpline()
 
     //table.printTable();
 
-    BSpline bs(table, BSplineType::CUBIC);
+    BSpline bs = BSpline::Builder(table).degree(3).build();
 
     // Add knots
     bs.insertKnots(1,0);

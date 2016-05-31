@@ -10,72 +10,104 @@
 #ifndef SPLINTER_BSPLINE_H
 #define SPLINTER_BSPLINE_H
 
-#include "datatable.h"
-#include "approximant.h"
+#include "function.h"
 #include "bsplinebasis.h"
 
 namespace SPLINTER
 {
 
-// Enum for different B-spline types
-enum class BSplineType
-{
-    LINEAR,     // Linear basis functions in each variable
-    QUADRATIC,  // Quadratic basis functions in each variable
-    CUBIC,      // Cubic basis functions in each variable
-    QUARTIC     // Quartic basis functions in each variable
-};
-
 /**
  * Class that implements the multivariate tensor product B-spline
  */
-class API BSpline : public Approximant
+class SPLINTER_API BSpline : public Function
 {
 public:
     /**
-     * Construct B-spline from knot vectors, control coefficients (assumed vectorized), and basis degrees
+     * Builder class for construction by regression
+     * Implemented in BSplineBuilder.*
      */
-    BSpline(std::vector<double> coefficients, std::vector< std::vector<double> > knotVectors, std::vector<unsigned int> basisDegrees);
-    BSpline(DenseMatrix coefficients, std::vector< std::vector<double> > knotVectors, std::vector<unsigned int> basisDegrees);
+    class Builder;
+    enum class Smoothing;
+    enum class KnotSpacing;
+
+    BSpline(unsigned int numVariables);
 
     /**
-     * Construct B-spline that interpolates the samples in DataTable
+     * Construct B-spline from knot vectors, coefficients, and basis degrees
      */
-    BSpline(const DataTable &samples, unsigned int degree);
-    BSpline(const DataTable &samples, BSplineType type);
+    BSpline(std::vector< std::vector<double> > knotVectors, std::vector<unsigned int> basisDegrees);
+    BSpline(std::vector<double> coefficients, std::vector< std::vector<double> > knotVectors, std::vector<unsigned int> basisDegrees);
+    BSpline(DenseVector coefficients, std::vector< std::vector<double> > knotVectors, std::vector<unsigned int> basisDegrees);
 
     /**
      * Construct B-spline from file
      */
     BSpline(const char *fileName);
-    BSpline(const std::string fileName);
+    BSpline(const std::string &fileName);
 
     virtual BSpline* clone() const { return new BSpline(*this); }
 
-    void init();
+    /**
+     * Evaluation of B-spline
+     */
+
+    // Avoid name hiding
+    using Function::eval;
+    using Function::evalJacobian;
+    using Function::evalHessian;
 
     // Evaluation of B-spline
     double eval(DenseVector x) const override;
-	double eval(double x) const;
     DenseMatrix evalJacobian(DenseVector x) const override;
     DenseMatrix evalHessian(DenseVector x) const override;
 
-    // Getters
-    unsigned int getNumVariables() const override { return numVariables; }
-    unsigned int getNumControlPoints() const { return coefficients.cols(); }
-    std::vector<unsigned int> getNumBasisFunctions() const;
-    std::vector< std::vector<double> > getKnotVectors() const;
+    // Evaluation of B-spline basis functions
+    SparseVector evalBasis(DenseVector x) const;
+    SparseMatrix evalBasisJacobian(DenseVector x) const;
+
+    /**
+     * Getters
+     */
+    DenseVector getCoefficients()
+    {
+        return coefficients;
+    }
+
+    unsigned int getNumCoefficients() const
+    {
+        return coefficients.size();
+    }
+
+    unsigned int getNumControlPoints() const
+    {
+        return coefficients.size();
+    }
+
+    std::vector<unsigned int> getNumBasisFunctionsPerVariable() const;
+
+    unsigned int getNumBasisFunctions() const
+    {
+        return basis.getNumBasisFunctions();
+    }
+
+    DenseMatrix getControlPoints() const;
+    std::vector< std::vector<double>> getKnotVectors() const;
     std::vector<unsigned int> getBasisDegrees() const;
     std::vector<double> getDomainUpperBound() const;
     std::vector<double> getDomainLowerBound() const;
 
-    // Control point related
-    void setControlPoints(DenseMatrix &controlPoints);
-    DenseMatrix getControlPoints() const;
+    /**
+     * Setters
+     */
+    void setCoefficients(const DenseVector &coefficients);
+    void setControlPoints(const DenseMatrix &controlPoints);
     void checkControlPoints() const;
 
-    // B-spline operations
-    void reduceDomain(std::vector<double> lb, std::vector<double> ub, bool doRegularizeKnotVectors = true);
+    // Linear transformation of control points (B-spline has affine invariance)
+    void updateControlPoints(const DenseMatrix &A);
+
+    // Reduce support of B-spline
+    void reduceSupport(std::vector<double> lb, std::vector<double> ub, bool doRegularizeKnotVectors = true);
 
     // Perform global knot refinement
     void globalKnotRefinement(); // All knots in one shabang
@@ -83,29 +115,30 @@ public:
     // Perform a local knot refinement at x
     void localKnotRefinement(DenseVector x);
 
-    /**
-     * Decompose B-spline to Bezier form
-     */
+    // Decompose B-spline to Bezier form
     void decomposeToBezierForm();
 
-    void insertKnots(double tau, unsigned int dim, unsigned int multiplicity = 1); // TODO: move back to private after testing
+    // Insert a knot until desired knot multiplicity is obtained
+    void insertKnots(double tau, unsigned int dim, unsigned int multiplicity = 1);
 
-    void save(const std::string fileName) const override;
+    void save(const std::string &fileName) const override;
+
+    std::string getDescription() const override;
 
 protected:
     BSpline();
 
     BSplineBasis basis;
-    DenseMatrix knotaverages; // One row per input
-    DenseMatrix coefficients; // One row per output
 
-    unsigned int numVariables; // Dimension of x
+    /*
+     * The control point matrix is P = (knotaverages, coefficients) in R^(m x n),
+     * where m = numBasisFunctions and n = numVariables + 1. Each row in P is a control point.
+     */
+    DenseVector coefficients;
+    DenseMatrix knotaverages;
 
     // Control point computations
-    void computeKnotAverages();
-    virtual void computeControlPoints(const DataTable &samples);
-    void computeBasisFunctionMatrix(const DataTable &samples, SparseMatrix &A) const;
-    void controlPointEquationRHS(const DataTable &samples, DenseMatrix &Bx, DenseMatrix &By) const;
+    DenseMatrix computeKnotAverages() const;
 
 private:
     // Domain reduction
@@ -115,9 +148,10 @@ private:
     // Helper functions
     bool pointInDomain(DenseVector x) const;
 
-    void load(const std::string fileName) override;
+    void load(const std::string &fileName) override;
 
     friend class Serializer;
+    friend bool operator==(const BSpline &lhs, const BSpline &rhs);
 };
 
 } // namespace SPLINTER

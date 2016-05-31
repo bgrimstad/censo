@@ -8,7 +8,6 @@
 */
 
 #include "bilinearrelaxationtest.h"
-
 #include "OptimizationProblem/constraintset.h"
 #include "OptimizationProblem/constraintbspline.h"
 #include "OptimizationProblem/constraintbilinear.h"
@@ -19,7 +18,6 @@ using std::cout;
 using std::endl;
 using SPLINTER::BSpline;
 using SPLINTER::DataTable;
-using SPLINTER::BSplineType;
 
 namespace CENSO
 {
@@ -104,7 +102,7 @@ void BilinearRelaxationTest::runProblem()
     }
 
     ConstraintSetPtr constraints2 = std::make_shared<ConstraintSet>();
-    BSpline bs(data, BSplineType::CUBIC);
+    BSpline bs = BSpline::Builder(data).degree(3).build();
     ConstraintPtr cbspline = std::make_shared<ConstraintBSpline>(vars, bs, true);
     constraints2->add(cbspline);
 

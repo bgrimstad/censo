@@ -10,7 +10,7 @@
 #ifndef SPLINTER_LINEARSOLVER_H
 #define SPLINTER_LINEARSOLVER_H
 
-#include "definitions.h"
+#include "generaldefinitions.h"
 #include "Eigen/IterativeLinearSolvers"
 #include "Eigen/SparseQR"
 
@@ -24,16 +24,16 @@ public:
     bool solve(const lhs &A, const rhs &b, rhs &x) const
     {
         if (!consistentData(A, b))
+        {
             throw Exception("LinearSolver::solve: Inconsistent matrix dimensions!");
+        }
 
         bool success = doSolve(A, b, x);
 
-        if (!success)
+        if (!(success && validSolution(A, b, x)))
+        {
             throw Exception("LinearSolver::solve: Solver did not converge to acceptable tolerance!");
-
-//        if (!validSolution(A, b, x))
-//            throw Exception("LinearSolver::solve: Invalid solution!");
-
+        }
         return true;
     }
 
@@ -57,46 +57,30 @@ private:
     }
 };
 
-template<class rhs = DenseVector>
-class DenseSVD : public LinearSolver<DenseMatrix, rhs>
+class DenseQR : public LinearSolver<DenseMatrix, DenseMatrix>
 {
 private:
-    bool doSolve(const DenseMatrix &A, const rhs &b, rhs &x) const
-    {
-        // Solve linear system
-        Eigen::JacobiSVD<DenseMatrix> svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
-        x = svd.solve(b);
-        return true;
-    }
-};
-
-template<class rhs = DenseVector>
-class DenseQR : public LinearSolver<DenseMatrix, rhs>
-{
-private:
-    bool doSolve(const DenseMatrix &A, const rhs &b, rhs &x) const
+    bool doSolve(const DenseMatrix &A, const DenseMatrix &b, DenseMatrix &x) const
     {
         //x = A.colPivHouseholderQr().solve(b);
 
         // Solve linear system
         Eigen::ColPivHouseholderQR<DenseMatrix> qr(A);
-
+        // Note: qr.info() always returns true
         if (qr.info() == Eigen::Success)
         {
             x = qr.solve(b);
 
-            // Note: qr.info() always returns true
-            return qr.info() == Eigen::Success;
+            return true;
         }
         return false;
     }
 };
 
-template<class rhs = DenseVector>
-class SparseBiCG : public LinearSolver<SparseMatrix, rhs>
+class SparseBiCG : public LinearSolver<SparseMatrix,DenseMatrix>
 {
 private:
-    bool doSolve(const SparseMatrix &A, const rhs &b, rhs &x) const
+    bool doSolve(const SparseMatrix &A, const DenseMatrix &b, DenseMatrix &x) const
     {
         // Init BiCGSTAB solver (requires square matrices)
         Eigen::BiCGSTAB<SparseMatrix> sparseSolver(A);
@@ -113,14 +97,13 @@ private:
     }
 };
 
-template<class rhs = DenseVector>
-class SparseLU : public LinearSolver<SparseMatrix, rhs>
+class SparseLU : public LinearSolver<SparseMatrix, DenseMatrix>
 {
 private:
-    bool doSolve(const SparseMatrix &A, const rhs &b, rhs &x) const
+    bool doSolve(const SparseMatrix &A, const DenseMatrix &b, DenseMatrix &x) const
     {
         // Init SparseLU solver (requires square matrices)
-        Eigen::SparseLU<SparseMatrix> sparseSolver;
+        Eigen::SparseLU<SparseMatrix > sparseSolver;
         // Compute the ordering permutation vector from the structural pattern of A
         sparseSolver.analyzePattern(A);
         // Compute the numerical factorization
@@ -138,11 +121,10 @@ private:
     }
 };
 
-template<class rhs = DenseVector>
-class SparseQR : public LinearSolver<SparseMatrix, rhs>
+class SparseQR : public LinearSolver<SparseMatrix, DenseMatrix>
 {
 private:
-    bool doSolve(const SparseMatrix &A, const rhs &b, rhs &x) const
+    bool doSolve(const SparseMatrix &A, const DenseMatrix &b, DenseMatrix &x) const
     {
         // Init SparseQR solver (works with rectangular matrices)
         Eigen::SparseQR<SparseMatrix, Eigen::COLAMDOrdering<int>> sparseSolver;

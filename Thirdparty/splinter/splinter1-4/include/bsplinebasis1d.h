@@ -10,7 +10,7 @@
 #ifndef SPLINTER_BSPLINEBASIS1D_H
 #define SPLINTER_BSPLINEBASIS1D_H
 
-#include "definitions.h"
+#include "generaldefinitions.h"
 
 namespace SPLINTER
 {
@@ -19,12 +19,13 @@ class BSplineBasis1D
 {
 public:
     BSplineBasis1D();
-    BSplineBasis1D(const std::vector<double> &knots, unsigned int degree);
+    BSplineBasis1D(std::vector<double> &x, unsigned int degree);
+    BSplineBasis1D(std::vector<double> &x, unsigned int degree, bool explicitKnots);
 
     // Evaluation of basis functions
-    SparseVector eval(double x) const;
-    SparseVector evalDerivative(double x, int r) const;
-    SparseVector evalFirstDerivative(double x) const; // Depricated
+    SparseVector evaluate(double x) const;
+    SparseVector evaluateDerivative(double x, int r) const;
+    SparseVector evaluateFirstDerivative(double x) const; // Depricated
 
     // Knot vector related
     SparseMatrix refineKnots();
@@ -66,14 +67,17 @@ private:
     // Builds basis matrix for alternative evaluation of basis functions
     SparseMatrix buildBasisMatrix(double x, unsigned int u, unsigned int k, bool diff = false) const;
 
-    /*
-     * Builds knot insertion matrix
-     * Implements Oslo Algorithm 1 from Lyche and Moerken (2011). Spline methods draft.
-     */
+    // Builds knot insertion matrix
     SparseMatrix buildKnotInsertionMatrix(const std::vector<double> &refinedKnots) const;
 
     // Helper functions
     bool inHalfopenInterval(double x, double x_min, double x_max) const;
+
+    // Knot vector related
+    bool isKnotVectorRegular() const;
+    bool isKnotVectorRegular(const std::vector<double> &vec) const;
+    bool isRefinement(const std::vector<double> &refinedKnots) const;
+    std::vector<double> knotVectorMovingAverage(std::vector<double> &vec) const;
 
     // Member variables
     unsigned int degree;
@@ -81,8 +85,6 @@ private:
     unsigned int targetNumBasisfunctions;
 
     friend class Serializer;
-    friend bool operator==(const BSplineBasis1D &lhs, const BSplineBasis1D &rhs);
-    friend bool operator!=(const BSplineBasis1D &lhs, const BSplineBasis1D &rhs);
 };
 
 } // namespace SPLINTER

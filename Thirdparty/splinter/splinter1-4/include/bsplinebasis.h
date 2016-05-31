@@ -10,7 +10,7 @@
 #ifndef SPLINTER_BSPLINEBASIS_H
 #define SPLINTER_BSPLINEBASIS_H
 
-#include "definitions.h"
+#include "generaldefinitions.h"
 #include "bsplinebasis1d.h"
 
 namespace SPLINTER
@@ -20,7 +20,10 @@ class BSplineBasis
 {
 public:
     BSplineBasis();
-    BSplineBasis(std::vector<std::vector<double>> &knotVectors, std::vector<unsigned int> basisDegrees);
+    BSplineBasis(std::vector< std::vector<double> > &X, std::vector<unsigned int> basisDegrees);
+    BSplineBasis(std::vector< std::vector<double> > &X, std::vector<unsigned int> basisDegrees, bool explicitKnots);
+
+    void setUnivariateBases(std::vector< std::vector<double> > &X, std::vector<unsigned int> &basisDegrees, bool explicitKnots);
 
     // Evaluation
     SparseVector eval(const DenseVector &x) const;
@@ -63,8 +66,11 @@ private:
     std::vector<BSplineBasis1D> bases;
     unsigned int numVariables;
 
+    // Fold from left using Kronecker product
+    SparseVector foldlKroneckerProductVectors(const std::vector<SparseVector> &vectors) const;
+    SparseMatrix foldlKroneckerProductMatrices(const std::vector<SparseMatrix> &matrices) const;
+
     friend class Serializer;
-    friend bool operator==(const BSplineBasis &lhs, const BSplineBasis &rhs);
 };
 
 } // namespace SPLINTER
