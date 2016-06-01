@@ -12,7 +12,6 @@
 #include "constraintset.h"
 //#include "SolverInterface/solveripopt.h"
 #include "unsupported/Eigen/KroneckerProduct"
-#include "Utils/timer.h"
 
 using std::cout;
 using std::endl;
@@ -34,7 +33,6 @@ ConstraintBSpline::ConstraintBSpline(const ConstraintBSpline &copy, bool deep)
       bspline(copy.bspline),
       equality(copy.equality),
       maxNumAuxiliaryVariables(copy.maxNumAuxiliaryVariables),
-      controlPoints(copy.controlPoints),
       storedVariables(copy.storedVariables)
 {
 }
@@ -89,9 +87,6 @@ void ConstraintBSpline::init(bool equality)
             nnzHessian++;
 
     constraintName = "B-spline";
-
-    // Get B-spline control points
-    controlPoints = bspline.getControlPoints().transpose();
 
     // Update bounds
     reduceVariableRanges();
@@ -215,8 +210,9 @@ void ConstraintBSpline::structureHessian(std::vector<int> &eqnr, std::vector<int
 bool ConstraintBSpline::reduceVariableRanges() const
 {
     // Update bound of y in f(x) - y = 0
-    DenseVector minControlPoints = controlPoints.rowwise().minCoeff();
-    DenseVector maxControlPoints = controlPoints.rowwise().maxCoeff();
+    auto cp = bspline.getControlPoints();
+    DenseVector minControlPoints = cp.colwise().minCoeff();
+    DenseVector maxControlPoints = cp.colwise().maxCoeff();
 
     for (unsigned int i = variables.size()-numConstraints; i < variables.size(); i++)
     {
@@ -265,7 +261,7 @@ ConstraintPtr ConstraintBSpline::getConvexRelaxation()
     }
 
     // Compute B-spline relaxation
-    if (controlPoints.cols() > maxNumAuxiliaryVariables)
+    if (bspline.getNumControlPoints() > maxNumAuxiliaryVariables)
         return computeRelaxationHyperrectangle();
 
     return computeRelaxationConvexHull();
@@ -273,8 +269,6 @@ ConstraintPtr ConstraintBSpline::getConvexRelaxation()
 
 void ConstraintBSpline::reduceBSplineDomain()
 {
-    Timer t; t.start();
-
     std::vector<double> varlb, varub;
     for (unsigned int i = 0; i < bspline.getNumVariables(); i++)
     {
@@ -310,32 +304,15 @@ void ConstraintBSpline::reduceBSplineDomain()
     // Reduce domain of B-spline
     bspline.reduceSupport(varlb, varub);
 
-    t.stop();
-    std::cout << "Reduce domain: " << t.getMicroSeconds() << std::endl;
-    t.start();
-
     // Refinement for low dimensional B-spline
     //if (bspline.getNumVariables() <= 2)
         bspline.globalKnotRefinement();
-
-    t.stop();
-    std::cout << "Refinement: " << t.getMicroSeconds() << std::endl;
-    t.start();
-
-    // Update control points
-    controlPoints = bspline.getControlPoints().transpose();
-
-    t.stop();
-    std::cout << "Transpose: " << t.getMicroSeconds() << std::endl;
-    // Transpose is the sinner!!! Need to rewrite constraint class to store as in SPLINTER
-
 }
 
 void ConstraintBSpline::localRefinement(const DenseVector &x)
 {
     DenseVector xadj = adjustToDomainBounds(x);
     bspline.localKnotRefinement(xadj);
-    controlPoints = bspline.getControlPoints().transpose();
 }
 
 ConstraintPtr ConstraintBSpline::computeRelaxationHyperrectangle()
@@ -351,13 +328,12 @@ ConstraintPtr ConstraintBSpline::computeRelaxationHyperrectangle()
      * AX <= b
      */
 
-    //    cout << "computeRelaxationSimpleBounds" << endl;
-
-    int dim = controlPoints.rows();
+    int dim = bspline.getNumVariables() + 1;
     assert(dim == (int)variables.size());
 
-    DenseVector minControlPoints = controlPoints.rowwise().minCoeff();
-    DenseVector maxControlPoints = controlPoints.rowwise().maxCoeff();
+    auto cp = bspline.getControlPoints();
+    DenseVector minControlPoints = cp.colwise().minCoeff();
+    DenseVector maxControlPoints = cp.colwise().maxCoeff();
 
     DenseMatrix Idim;
     Idim.setIdentity(dim,dim);
@@ -368,8 +344,8 @@ ConstraintPtr ConstraintBSpline::computeRelaxationHyperrectangle()
 
     DenseVector b(2*dim);
 
-    b.block(0,0, dim, 1) = - minControlPoints;
-    b.block(dim,0, dim, 1) = maxControlPoints;
+    b.block(0, 0, dim, 1) = - minControlPoints;
+    b.block(dim, 0, dim, 1) = maxControlPoints;
 
     ConstraintPtr relaxedConstraint = std::make_shared<ConstraintLinear>(variables, A ,b, false);
     relaxedConstraint->setName("B-spline hypercube relaxation (linear)");
@@ -390,8 +366,9 @@ ConstraintPtr ConstraintBSpline::computeRelaxationConvexHull()
      * AX = b, [lb' 0]' <= X <= [ub' inf]'
      */
 
-    int rowsC = controlPoints.rows();
-    int colsC = controlPoints.cols();
+    // Consider renaming here (control points matrix was transposed in old implementation)
+    int rowsC = bspline.getNumVariables() + 1;
+    int colsC = bspline.getNumControlPoints();
     int rowsA = rowsC + 1;
     int colsA = rowsC + colsC;
 
@@ -406,7 +383,7 @@ ConstraintPtr ConstraintBSpline::computeRelaxationConvexHull()
 
     DenseMatrix A(rowsA, colsA);
     A.block(0,     0,     rowsC, rowsC) = I;
-    A.block(0,     rowsC, rowsC, colsC) = -controlPoints;
+    A.block(0,     rowsC, rowsC, colsC) = -bspline.getControlPoints().transpose();
     A.block(rowsC, 0,     1,     rowsC) = zeros;
     A.block(rowsC, rowsC, 1,     colsC) = ones;
 
@@ -420,7 +397,7 @@ ConstraintPtr ConstraintBSpline::computeRelaxationConvexHull()
     auto auxVariables = variables;
 
     // Number of auxiliary variables equals number of control points
-    for (int i = 0; i < controlPoints.cols(); i++)
+    for (int i = 0; i < bspline.getNumControlPoints(); i++)
         auxVariables.push_back(std::make_shared<Variable>(0, 0, 1));
 
     ConstraintPtr relaxedConstraint = std::make_shared<ConstraintLinear>(auxVariables, A ,b, true);
@@ -501,8 +478,9 @@ bool ConstraintBSpline::controlPointBoundsDeduction() const
     std::vector<unsigned int> numBasisFunctions = bspline.getNumBasisFunctionsPerVariable();
 
     // Get matrix of coefficients
-    DenseMatrix cps = controlPoints;
-    DenseMatrix coeffs = cps.block(bspline.getNumVariables(), 0, 1, cps.cols());
+//    DenseMatrix cps = bspline.getControlPoints().transpose();
+//    DenseMatrix coeffs = cps.block(bspline.getNumVariables(), 0, 1, cps.cols());
+    DenseMatrix coeffs = bspline.getCoefficients().transpose();
 
     for (unsigned int d = 0; d < bspline.getNumVariables(); d++)
     {

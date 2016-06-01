@@ -58,6 +58,8 @@ public:
 private:
 
     // B-spline object
+    // NOTE: control point matrix is assumed to be R^(m x (n + 1)),
+    // with m = number of control points and n = number of variables (x)
     BSpline bspline;
 
     // Indicate if equality constraint
@@ -67,9 +69,6 @@ private:
     int maxNumAuxiliaryVariables;
 
     // Related to variable bounds check
-    // NOTE: control point matrix is assumed to be R^(m x (n + 1)),
-    // with m = number of control points and n = number of variables (x)
-    DenseMatrix controlPoints;
     std::vector<Variable> storedVariables;
 
     // Relaxation is the hypercube defined by the extremal values in each dimension.
