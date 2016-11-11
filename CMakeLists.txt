@@ -12,7 +12,7 @@ set(BITNESS "64")
 set(DEFAULT_EIGEN_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Thirdparty/Eigen)
 
 # Set CMake settings
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m${BITNESS} -std=c++11 -Werror=return-type")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m${BITNESS} -std=c++11 -pthread -Werror=return-type")
 #set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wno-long-long")
 
@@ -23,18 +23,18 @@ set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Thirdparty/Eigen)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Thirdparty/splinter/include)
-include_directories(/home/bjarne/Solvers/Gurobi/gurobi651/linux64/include)
+include_directories(/home/bjarne/Solvers/Gurobi/gurobi701/linux64/include)
 include_directories(/home/bjarne/Solvers/Bonmin/Bonmin-1.7.5/build/include/coin)
 
 # Bonmin and Ipopt link directories
 link_directories(/home/bjarne/Solvers/Bonmin/Bonmin-1.7.5/build/lib)
-link_directories(/usr/lib/gcc/x86_64-linux-gnu/4.8)
+link_directories(/usr/lib/gcc/x86_64-linux-gnu/5)
 link_directories(/usr/x86_64-linux-gnu)
 link_directories(/usr/lib)
 link_directories(/lib)
 
 # Gurobi and SPLINTER link directories
-link_directories(/home/bjarne/Solvers/Gurobi/gurobi651/linux64/lib)
+link_directories(/home/bjarne/Solvers/Gurobi/gurobi701/linux64/lib)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/Thirdparty/splinter/)
 
 # These are the sources we need for compilation of the library
@@ -167,4 +167,6 @@ set(SRC_LIST
 # Testing executable
 set(TEST "${PROJECT_NAME_LOWER}-test")
 add_executable(${TEST} ${SRC_LIST})
-target_link_libraries(${TEST} bonmin ipopt Cbc Cgl OsiClp Osi Clp CoinUtils dl coinhsl coinlapack coinblas gfortran m quadmath z gurobi_c++ gurobi65 splinter-3-1)
+
+# NOTE: Linking to libraries compiled with gcc 5+ (for Gurobi we link to gurobi_g++5.2 instead of gurobi_c++)
+target_link_libraries(${TEST} bonmin ipopt Cbc Cgl OsiClp Osi Clp CoinUtils dl coinhsl coinlapack coinblas gfortran m quadmath z gurobi_g++5.2 gurobi70 splinter-3-1)
