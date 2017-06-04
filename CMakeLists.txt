@@ -17,7 +17,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m${BITNESS} -std=c++11 -pthread -Werror
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wno-long-long")
 
 # Set build type
-set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE})
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE})
+endif()
 
 # Include directories
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
