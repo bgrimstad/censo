@@ -8,6 +8,7 @@
 */
 
 #include "node.h"
+#include "Utils/eigen_utils.h"
 #include <iostream>
 
 using std::cout;

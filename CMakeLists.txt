@@ -42,11 +42,13 @@ link_directories(${CMAKE_CURRENT_SOURCE_DIR}/Thirdparty/splinter/)
 # These are the sources we need for compilation of the library
 set(SRC_LIST
     Utils/definitions.h
+    Utils/eigen_utils.h
     Utils/metrics.h
     Utils/timer.h
     Utils/linearsolvers.h
     Utils/linearinterpolation.h
     Utils/bsplinepoly.h
+    Utils/bspline_wrapper.h
     OptimizationProblem/variable.h
     OptimizationProblem/constraint.h
     OptimizationProblem/constraintlinear.h
@@ -105,9 +107,11 @@ set(SRC_LIST
     TestProblems/linearintervalanalysistest.h
     Test/unittests.h
     Utils/definitions.cpp
+    Utils/eigen_utils.cpp
     Utils/metrics.cpp
     Utils/linearinterpolation.cpp
     Utils/bsplinepoly.cpp
+    Utils/bspline_wrapper.cpp
     OptimizationProblem/constraint.cpp
     OptimizationProblem/constraintlinear.cpp
     OptimizationProblem/constraintsine.cpp
@@ -171,4 +175,4 @@ set(TEST "${PROJECT_NAME_LOWER}-test")
 add_executable(${TEST} ${SRC_LIST})
 
 # NOTE: Linking to libraries compiled with gcc 5+ (for Gurobi we link to gurobi_g++5.2 instead of gurobi_c++)
-target_link_libraries(${TEST} bonmin ipopt Cbc Cgl OsiClp Osi Clp CoinUtils dl coinhsl coinlapack coinblas gfortran m quadmath z gurobi_g++5.2 gurobi70 splinter-3-1)
+target_link_libraries(${TEST} bonmin ipopt Cbc Cgl OsiClp Osi Clp CoinUtils dl coinhsl coinlapack coinblas gfortran m quadmath z gurobi_g++5.2 gurobi70 splinter-4-0)

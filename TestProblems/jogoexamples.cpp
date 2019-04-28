@@ -14,7 +14,8 @@
 #include "OptimizationProblem/constraintquadratic.h"
 #include "OptimizationProblem/constraintpolynomial.h"
 #include "Utils/bsplinepoly.h"
-#include "bsplinebuilder.h"
+#include "Utils/bspline_wrapper.h"
+#include "Utils/eigen_utils.h"
 #include "BranchAndBound/branchandbound.h"
 #include "SolverInterface/solvergurobi.h"
 #include "SolverInterface/solveripopt.h"
@@ -50,7 +51,7 @@ void saveDataTable(DataTable &data, std::string filename)
             myfile << "\n";
         }
 
-        std::vector<double> y = data.getVectorY();
+        std::vector<double> y = data.getTableY();
 
         for (unsigned int i=0; i<y.size(); i++)
         {
@@ -102,7 +103,7 @@ void sampleMichalewicz()
     }
 
     // Create B-spline
-    BSpline bs = BSpline::Builder(data).degree(3).build(); //(data, BSplineType::CUBIC);
+    BSpline bs = BSplineWrap::fit_bspline(data, 3);
 
     // Error
     DataTable error;
@@ -123,11 +124,11 @@ void sampleMichalewicz()
             xvec(0) = x1;
             xvec(1) = x2;
 
-            double ybs = bs.eval(xvec);
+            double ybs = bs.eval(xvec)(0);
 
             double y = micha(x1, x2);
 
-            error.addSample(xvec,y-ybs);
+            error.addSample(eigenToStdVec(xvec), y-ybs);
 
             double eabs = std::abs(y-ybs);
             eabs_avg += eabs;
@@ -225,8 +226,10 @@ void samplePump()
     }
 
     // Create B-spline
-    BSpline bspline_pow = BSpline::Builder(data_pow).degree(2).build();
-    BSpline bspline_dp = BSpline::Builder(data_pres).degree(2).build();
+//    BSpline bspline_pow = BSpline::Builder(data_pow).degree(2).build();
+    BSpline bspline_pow = BSplineWrap::fit_bspline(data_pow, 2);
+//    BSpline bspline_dp = BSpline::Builder(data_pres).degree(2).build();
+    BSpline bspline_dp = BSplineWrap::fit_bspline(data_pres, 2);
 
     // Error
     DataTable error_pow;
@@ -257,14 +260,16 @@ void samplePump()
             x(0) = vi;
             x(1) = wi;
 
-            double bs_pow = bspline_pow.eval(x);
-            double bs_dp = bspline_dp.eval(x);
+            auto x_std = eigenToStdVec(x);
+
+            double bs_pow = bspline_pow.eval(x)(0);
+            double bs_dp = bspline_dp.eval(x)(0);
 
             double pow = power(vi, wi, alpha.at(pump), beta.at(pump), gamma.at(pump));
             double dp = pressure(vi, wi, a.at(pump), b.at(pump), c.at(pump));
 
-            error_pow.addSample(x,pow-bs_pow);
-            error_dp.addSample(x,dp-bs_dp);
+            error_pow.addSample(x_std, pow-bs_pow);
+            error_dp.addSample(x_std, dp-bs_dp);
 
             double eabs_pow = std::abs(pow-bs_pow);
             double eabs_dp = std::abs(dp-bs_dp);
@@ -667,7 +672,8 @@ void pumpSynthesis(unsigned int grid)
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, clb, cub);
 
-            BSpline bs(coeffs, knots, deg);
+//            BSpline bs(coeffs, knots, deg);
+            BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -703,7 +709,8 @@ void pumpSynthesis(unsigned int grid)
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, clb, cub);
 
-            BSpline bs(coeffs, knots, deg);
+//            BSpline bs(coeffs, knots, deg);
+            BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -741,7 +748,8 @@ void pumpSynthesis(unsigned int grid)
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, clb, cub);
 
-            BSpline bs(coeffs, knots, deg);
+//            BSpline bs(coeffs, knots, deg);
+            BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -788,7 +796,8 @@ void pumpSynthesis(unsigned int grid)
             }
 
             // Create B-spline
-            BSpline bs = BSpline::Builder(samples).degree(3).build();
+//            BSpline bs = BSpline::Builder(samples).degree(3).build();
+            BSpline bs = BSplineWrap::fit_bspline(samples, 3);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -825,7 +834,8 @@ void pumpSynthesis(unsigned int grid)
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, clb, cub);
 
-            BSpline bs(coeffs, knots, deg);
+//            BSpline bs(coeffs, knots, deg);
+            BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -872,7 +882,8 @@ void pumpSynthesis(unsigned int grid)
             }
 
             // Create B-spline
-            BSpline bs = BSpline::Builder(samples).degree(3).build();
+//            BSpline bs = BSpline::Builder(samples).degree(3).build();
+            BSpline bs = BSplineWrap::fit_bspline(samples, 3);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -907,7 +918,8 @@ void pumpSynthesis(unsigned int grid)
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, clb, cub);
 
-            BSpline bs(coeffs, knots, deg);
+//            BSpline bs(coeffs, knots, deg);
+            BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -943,7 +955,8 @@ void pumpSynthesis(unsigned int grid)
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, clb, cub);
 
-            BSpline bs(coeffs, knots, deg);
+//            BSpline bs(coeffs, knots, deg);
+            BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -1150,7 +1163,8 @@ void optControl1()
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, lb, ub);
 
-            BSpline bs(coeffs, knots, deg);
+//            BSpline bs(coeffs, knots, deg);
+            BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -1162,7 +1176,7 @@ void optControl1()
                 double x = lb.at(0) + frac*(ub.at(0)-lb.at(0));
                 DenseVector xv(1); xv(0) = x;
 
-                auto y = bs.eval(xv);
+                auto y = bs.eval(xv)(0);
                 auto yreal = std::pow(x+a,4);
 
                 assert(assertNear(y, yreal, 1e-03));
@@ -1202,7 +1216,8 @@ void optControl1()
 
                     std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, lb, ub);
 
-                    BSpline bs(coeffs, knots, deg);
+//                    BSpline bs(coeffs, knots, deg);
+                    BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
                     ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -1340,7 +1355,8 @@ void optControl2()
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, lb, ub);
 
-            BSpline bs(coeffs, knots, deg);
+//            BSpline bs(coeffs, knots, deg);
+            BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -1352,7 +1368,7 @@ void optControl2()
                 double x = lb.at(0) + frac*(ub.at(0)-lb.at(0));
                 DenseVector xv(1); xv(0) = x;
 
-                auto y = bs.eval(xv);
+                auto y = bs.eval(xv)(0);
                 auto yreal = x*x;
 
                 if (!(std::abs(y-yreal) < 1e-10))
@@ -1474,7 +1490,8 @@ void optControl3()
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, lb, ub);
 
-            BSpline bs(coeffs, knots, deg);
+//            BSpline bs(coeffs, knots, deg);
+            BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -1486,7 +1503,7 @@ void optControl3()
                 double x = lb.at(0) + frac*(ub.at(0)-lb.at(0));
                 DenseVector xv(1); xv(0) = x;
 
-                auto y = bs.eval(xv);
+                auto y = bs.eval(xv)(0);
                 auto yreal = x*x;
 
                 if (!(std::abs(y-yreal) < 1e-10))
@@ -1523,7 +1540,8 @@ void optControl3()
 
             std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, lb, ub);
 
-            BSpline bs(coeffs, knots, deg);
+//            BSpline bs(coeffs, knots, deg);
+            BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
             ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -1535,7 +1553,7 @@ void optControl3()
                 double x = lb.at(0) + frac*(ub.at(0)-lb.at(0));
                 DenseVector xv(1); xv(0) = x;
 
-                auto y = bs.eval(xv);
+                auto y = bs.eval(xv)(0);
                 auto yreal = x*x;
 
                 if (!(std::abs(y-yreal) < 1e-10))
@@ -1595,7 +1613,8 @@ void Ptest()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs, knots, deg);
+//        BSpline bs(coeffs, knots, deg);
+        BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -1620,7 +1639,8 @@ void Ptest()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs, knots, deg);
+//        BSpline bs(coeffs, knots, deg);
+        BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -1645,7 +1665,8 @@ void Ptest()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs, knots, deg);
+//        BSpline bs(coeffs, knots, deg);
+        BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -1721,7 +1742,8 @@ void polynomialOptimization()
         cout << ks;
     }
 
-    BSpline bs(coeffs, knots, degrees);
+//    BSpline bs(coeffs, knots, degrees);
+    BSpline bs = BSplineWrap::build_bspline(coeffs, knots, degrees);
 
     ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(vars, bs, true);
 
@@ -1789,7 +1811,8 @@ void sixHumpCamelBackPoly()
 
 //    printVector(knots);
 
-    BSpline bs(coeffs, knots, deg);
+//    BSpline bs(coeffs, knots, deg);
+    BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
     ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(vars, bs, true);
 
@@ -1871,7 +1894,8 @@ void sixHumpCamelBackPoly2()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, lb, ub);
 
-        BSpline bs(coeffs, knots, deg);
+//        BSpline bs(coeffs, knots, deg);
+        BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -2343,7 +2367,8 @@ void subdivision_example()
     std::vector< std::vector<double> > knots2;
     knots2.push_back(knots);
 
-    BSpline bs(coeffs, knots2, degrees);
+//    BSpline bs(coeffs, knots2, degrees);
+    BSpline bs = BSplineWrap::build_bspline(coeffs, knots2, degrees);
 
     // Subdivision
     bs.insertKnots(0.5,0);
@@ -2381,7 +2406,8 @@ void cubicSpline()
 
     //table.printTable();
 
-    BSpline bs = BSpline::Builder(table).degree(3).build();
+//    BSpline bs = BSpline::Builder(table).degree(3).build();
+    BSpline bs = BSplineWrap::fit_bspline(table, 3);
 
     // Add knots
     bs.insertKnots(1,0);

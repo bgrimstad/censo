@@ -41,20 +41,4 @@ std::vector<double> linspace(double start, double stop, unsigned int points)
     return ret;
 }
 
-std::vector<double> eigenToStdVec(const DenseVector vec)
-{
-    std::vector<double> out(vec.size(), 0);
-    for (int i = 0; i < vec.size(); i++)
-        out.push_back(vec(i));
-    return out;
-}
-
-DenseVector stdToEigenVec(const std::vector<double> vec)
-{
-    DenseVector out = DenseVector::Zero(vec.size());
-    for (unsigned int i = 0; i < vec.size(); i++)
-        out(i) = vec.at(i);
-    return out;
-}
-
 } // namespace CENSO

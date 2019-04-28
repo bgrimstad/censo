@@ -40,13 +40,14 @@ ConstraintBSpline::ConstraintBSpline(const ConstraintBSpline &copy, bool deep)
 void ConstraintBSpline::init(bool equality)
 {
     numConstraints = 1;
-    assert(variables.size() == bspline.getNumVariables() + numConstraints);
+    assert(variables.size() == bspline.getDimX() + numConstraints);
+    assert(bspline.getDimY() == 1);
 
     // Update variable bounds
     auto varlb = bspline.getDomainLowerBound();
     auto varub = bspline.getDomainUpperBound();
 
-    for (unsigned int i = 0; i < bspline.getNumVariables(); i++)
+    for (unsigned int i = 0; i < bspline.getDimX(); i++)
     {
         variables.at(i)->updateBounds(varlb.at(i), varub.at(i));
     }
@@ -73,7 +74,7 @@ void ConstraintBSpline::init(bool equality)
         constraintTypes.push_back(ConstraintType::NONLINEAR_NONCONVEX);
     }
 
-    nnzJacobian = bspline.getNumVariables() + 1;
+    nnzJacobian = bspline.getDimX() + 1;
     nnzHessian = 0;
 
     jacobianCalculated = true;
@@ -82,7 +83,7 @@ void ConstraintBSpline::init(bool equality)
     constraintConvex = false;
     convexRelaxationAvailable = true;
 
-    for (unsigned int row = 0; row < bspline.getNumVariables(); row++)
+    for (unsigned int row = 0; row < bspline.getDimX(); row++)
         for (unsigned int col = 0; col <= row; col++)
             nnzHessian++;
 
@@ -103,7 +104,7 @@ DenseVector ConstraintBSpline::eval(const DenseVector &x) const
     DenseVector xx = xa.block(0, 0, variables.size()-numConstraints, 1);
     DenseVector yy = xy.block(variables.size()-numConstraints, 0, numConstraints, 1);
 
-    double by = bspline.eval(xx);
+    double by = bspline.eval(xx)(0);
 
     DenseVector y = DenseVector::Zero(numConstraints);
     y(0) = by - yy(0);
@@ -129,7 +130,7 @@ DenseVector ConstraintBSpline::evalJacobian(const DenseVector &x) const
     //return centralDifference(xa);
 
     // Get x-values
-    DenseVector xx = xa.block(0, 0, bspline.getNumVariables(), 1);
+    DenseVector xx = xa.block(0, 0, bspline.getDimX(), 1);
 
     // Evaluate B-spline Jacobian
     DenseMatrix jac = bspline.evalJacobian(xx);
@@ -155,29 +156,31 @@ DenseVector ConstraintBSpline::evalJacobian(const DenseVector &x) const
 
 DenseVector ConstraintBSpline::evalHessian(const DenseVector &x) const
 {
-    DenseVector xa = adjustToDomainBounds(x);
-    DenseVector ddx = DenseVector::Zero(nnzHessian);
-
-    // Get x-values
-    DenseVector xx = xa.block(0, 0, bspline.getNumVariables(), 1);
-
-    // Calculate Hessian
-    DenseMatrix H = bspline.evalHessian(xx);
-
-    // H is symmetric so fill out lower left triangle only
-    int idx = 0;
-    for (int row = 0; row < H.rows(); row++)
-    {
-        for (int col = 0; col <= row; col++)
-        {
-            //if (H(row,col) != 0)
-            //{
-                ddx(idx++) = H(row,col);
-            //}
-        }
-    }
-
-    return ddx;
+    assert(false);
+//    DenseVector xa = adjustToDomainBounds(x);
+//    DenseVector ddx = DenseVector::Zero(nnzHessian);
+//
+//    // Get x-values
+//    DenseVector xx = xa.block(0, 0, bspline.getDimX(), 1);
+//
+//    // Calculate Hessian
+//    DenseMatrix H = bspline.evalHessian(xx);
+//
+//    // H is symmetric so fill out lower left triangle only
+//    int idx = 0;
+//    for (int row = 0; row < H.rows(); row++)
+//    {
+//        for (int col = 0; col <= row; col++)
+//        {
+//            //if (H(row,col) != 0)
+//            //{
+//                ddx(idx++) = H(row,col);
+//            //}
+//        }
+//    }
+//
+//    return ddx;
+    return DenseMatrix::Zero(1, 1);
 }
 
 void ConstraintBSpline::structureJacobian(std::vector<int> &iRow, std::vector<int> &jCol)
@@ -196,7 +199,7 @@ void ConstraintBSpline::structureHessian(std::vector<int> &eqnr, std::vector<int
 {
     // H is symmetric so fill out lower left triangle only
     // Also, not neccessary to fill out for outputs y (=0)
-    for (unsigned int row = 0; row < bspline.getNumVariables(); row++)
+    for (unsigned int row = 0; row < bspline.getDimX(); row++)
     {
         for (unsigned int col = 0; col <= row; col++)
         {
@@ -210,7 +213,10 @@ void ConstraintBSpline::structureHessian(std::vector<int> &eqnr, std::vector<int
 bool ConstraintBSpline::reduceVariableRanges() const
 {
     // Update bound of y in f(x) - y = 0
-    auto cp = bspline.getControlPoints();
+    auto k = bspline.getKnotAverages();
+    auto c = bspline.getControlPoints();
+    DenseMatrix cp(k.rows(), k.cols() + c.cols());
+    cp << k, c;
     DenseVector minControlPoints = cp.colwise().minCoeff();
     DenseVector maxControlPoints = cp.colwise().maxCoeff();
 
@@ -270,7 +276,7 @@ ConstraintPtr ConstraintBSpline::getConvexRelaxation()
 void ConstraintBSpline::reduceBSplineDomain()
 {
     std::vector<double> varlb, varub;
-    for (unsigned int i = 0; i < bspline.getNumVariables(); i++)
+    for (unsigned int i = 0; i < bspline.getDimX(); i++)
     {
         varlb.push_back(variables.at(i)->getLowerBound());
         varub.push_back(variables.at(i)->getUpperBound());
@@ -328,10 +334,15 @@ ConstraintPtr ConstraintBSpline::computeRelaxationHyperrectangle()
      * AX <= b
      */
 
-    int dim = bspline.getNumVariables() + 1;
+    int dim = bspline.getDimX() + 1;
     assert(dim == (int)variables.size());
 
-    auto cp = bspline.getControlPoints();
+    auto k = bspline.getKnotAverages();
+    auto c = bspline.getControlPoints();
+    DenseMatrix cp(k.rows(), k.cols() + c.cols());
+    cp << k, c;
+
+//    auto cp = bspline.getControlPoints(); // TODO:
     DenseVector minControlPoints = cp.colwise().minCoeff();
     DenseVector maxControlPoints = cp.colwise().maxCoeff();
 
@@ -367,7 +378,7 @@ ConstraintPtr ConstraintBSpline::computeRelaxationConvexHull()
      */
 
     // Consider renaming here (control points matrix was transposed in old implementation)
-    int rowsC = bspline.getNumVariables() + 1;
+    int rowsC = bspline.getDimX() + 1;
     int colsC = bspline.getNumControlPoints();
     int rowsA = rowsC + 1;
     int colsA = rowsC + colsC;
@@ -381,9 +392,15 @@ ConstraintPtr ConstraintBSpline::computeRelaxationConvexHull()
     DenseMatrix ones;
     ones.setOnes(1,colsC);
 
+    auto k = bspline.getKnotAverages();
+    auto c = bspline.getControlPoints();
+    DenseMatrix cp(k.rows(), k.cols() + c.cols());
+    cp << k, c;
+
+
     DenseMatrix A(rowsA, colsA);
     A.block(0,     0,     rowsC, rowsC) = I;
-    A.block(0,     rowsC, rowsC, colsC) = -bspline.getControlPoints().transpose();
+    A.block(0,     rowsC, rowsC, colsC) = -cp.transpose();
     A.block(rowsC, 0,     1,     rowsC) = zeros;
     A.block(rowsC, rowsC, 1,     colsC) = ones;
 
@@ -480,9 +497,9 @@ bool ConstraintBSpline::controlPointBoundsDeduction() const
     // Get matrix of coefficients
 //    DenseMatrix cps = bspline.getControlPoints().transpose();
 //    DenseMatrix coeffs = cps.block(bspline.getNumVariables(), 0, 1, cps.cols());
-    DenseMatrix coeffs = bspline.getCoefficients().transpose();
+    DenseMatrix coeffs = bspline.getControlPoints().transpose();
 
-    for (unsigned int d = 0; d < bspline.getNumVariables(); d++)
+    for (unsigned int d = 0; d < bspline.getDimX(); d++)
     {
         if (assertNear(xlb.at(d), xub.at(d)))
             continue;
@@ -501,7 +518,7 @@ bool ConstraintBSpline::controlPointBoundsDeduction() const
             // Selection matrix
             DenseMatrix S = DenseMatrix::Ones(1,1);
 
-            for (unsigned int d2 = 0; d2 < bspline.getNumVariables(); d2++)
+            for (unsigned int d2 = 0; d2 < bspline.getDimX(); d2++)
             {
                 DenseMatrix temp(S);
 
@@ -543,7 +560,7 @@ bool ConstraintBSpline::controlPointBoundsDeduction() const
             // Selection matrix
             DenseMatrix S = DenseMatrix::Ones(1,1);
 
-            for (unsigned int d2 = 0; d2 < bspline.getNumVariables(); d2++)
+            for (unsigned int d2 = 0; d2 < bspline.getDimX(); d2++)
             {
                 DenseMatrix temp(S);
 

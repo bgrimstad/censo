@@ -14,7 +14,7 @@
 #include "OptimizationProblem/constraintlinear.h"
 #include "OptimizationProblem/constraintquadratic.h"
 
-#include "datatable.h"
+#include "data_table.h"
 
 namespace CENSO
 {

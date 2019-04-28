@@ -13,7 +13,7 @@
 #include "OptimizationProblem/constraintbspline.h"
 #include "BranchAndBound/branchandbound.h"
 #include "Utils/bsplinepoly.h"
-#include "Utils/definitions.h"
+#include "Utils/bspline_wrapper.h"
 
 using std::cout;
 using std::endl;
@@ -78,7 +78,7 @@ void POP10::runProblem()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs, knots, deg);
+        BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 

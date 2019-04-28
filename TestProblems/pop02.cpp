@@ -13,7 +13,8 @@
 #include "OptimizationProblem/constraintbspline.h"
 #include "BranchAndBound/branchandbound.h"
 #include "Utils/bsplinepoly.h"
-#include "Utils/definitions.h"
+#include "Utils/bspline_wrapper.h"
+
 
 using std::cout;
 using std::endl;
@@ -68,7 +69,7 @@ void POP02::runProblem()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs, knots, deg);
+        BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
         std::vector<VariablePtr> cvars = {var,vars.at(2)};
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
@@ -93,7 +94,7 @@ void POP02::runProblem()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs, knots, deg);
+        BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
         std::vector<VariablePtr> cvars = {var,vars.at(3)};
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
@@ -118,8 +119,7 @@ void POP02::runProblem()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs, knots, deg);
-
+        BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
         std::vector<VariablePtr> cvars = {var,vars.at(4)};
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
@@ -143,7 +143,7 @@ void POP02::runProblem()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs, knots, deg);
+        BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
         std::vector<VariablePtr> cvars = {var, vars.at(5)};
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
@@ -167,7 +167,7 @@ void POP02::runProblem()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs, knots, deg);
+        BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
         std::vector<VariablePtr> cvars = {var,vars.at(6)};
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);

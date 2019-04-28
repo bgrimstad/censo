@@ -74,10 +74,6 @@ int randomInteger(int min, int max);
 // Linspace
 std::vector<double> linspace(double start, double stop, unsigned int points);
 
-// Converters
-std::vector<double> eigenToStdVec(const DenseVector vec);
-DenseVector stdToEigenVec(const std::vector<double> vec);
-
 } // namespace CENSO
 
 #endif // GENERALDEFINITIONS_H

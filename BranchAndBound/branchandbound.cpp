@@ -22,6 +22,7 @@
 #include <ctime>
 #include "Utils/timer.h"
 #include "Utils/metrics.h"
+#include "Utils/eigen_utils.h"
 
 namespace CENSO
 {

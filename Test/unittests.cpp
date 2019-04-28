@@ -3,6 +3,7 @@
 #include "OptimizationProblem/constraintset.h"
 #include "OptimizationProblem/constraintbspline.h"
 #include "OptimizationProblem/constraintlinear.h"
+#include "Utils/bspline_wrapper.h"
 
 using std::cout;
 using std::endl;
@@ -15,11 +16,11 @@ using SPLINTER::DataTable;
  */
 void testConstraintBSplineRangeReduction1()
 {
-    DenseMatrix coefficients(1,6);
+    DenseMatrix coefficients(6, 1);
     coefficients << 1, 1, 0, 0, -1, -1;
     std::vector< std::vector<double> > knots = {{0,0,1,2,3,4,5,5}}; // Should have n+p+1 knots!
     std::vector<unsigned int> degrees = {1};
-    SPLINTER::BSpline bspline(coefficients, knots, degrees);
+    BSpline bspline = BSplineWrap::build_bspline(coefficients, knots, degrees);
 
     std::vector<VariablePtr> vars = {std::make_shared<Variable>(1, 0, 5),
                                      std::make_shared<Variable>(1, 0, 0.99)};
@@ -34,11 +35,11 @@ void testConstraintBSplineRangeReduction1()
 
 void testConstraintBSplineRangeReduction2()
 {
-    DenseMatrix coefficients(1,7);
+    DenseMatrix coefficients(7, 1);
     coefficients << 1, 1, 1, 0, -1, -1, -1;
     std::vector< std::vector<double> > knots = {{0,0,0,1,2,3,4,5,5,5}}; // Should have n+p+1 knots!
     std::vector<unsigned int> degrees = {2};
-    SPLINTER::BSpline bspline(coefficients, knots, degrees);
+    SPLINTER::BSpline bspline = BSplineWrap::build_bspline(coefficients, knots, degrees);
 
     std::vector<VariablePtr> vars = {std::make_shared<Variable>(1, 0, 5),
                                      std::make_shared<Variable>(1, 0, 0.99)};
@@ -67,7 +68,7 @@ void testConstraintBSplineRangeReduction3()
         data.addSample(x,y);
     }
 
-    BSpline bs = BSpline::Builder(data).degree(3).build();
+    BSpline bs = BSpline::Builder(data.getDimX(), data.getDimY()).degree(3).fit(data, SPLINTER::BSpline::Smoothing::NONE, 0.0);
 
     std::vector<VariablePtr> vars = {std::make_shared<Variable>(1, -10, 10),
                                      std::make_shared<Variable>(1, 0, 5)};
@@ -293,7 +294,7 @@ void testConvexRelaxations()
     data.addSample(0.5,0.5);
     data.addSample(1,1);
 
-    BSpline bs = BSpline::Builder(data).degree(1).build();
+    BSpline bs = BSpline::Builder(data.getDimX(), data.getDimY()).degree(1).fit(data);
     auto bsvars = {vars.at(0), vars.at(1)};
     ConstraintPtr bscon = std::make_shared<ConstraintBSpline>(bsvars, bs, true);
 

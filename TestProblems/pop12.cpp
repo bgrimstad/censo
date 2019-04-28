@@ -13,6 +13,7 @@
 #include "OptimizationProblem/constraintbspline.h"
 #include "BranchAndBound/branchandbound.h"
 #include "Utils/bsplinepoly.h"
+#include "Utils/bspline_wrapper.h"
 #include "Utils/definitions.h"
 
 using std::cout;
@@ -94,7 +95,8 @@ void POP12::P12_1()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs, knots, deg);
+//        BSpline bs(coeffs, knots, deg);
+        BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -130,7 +132,8 @@ void POP12::P12_1()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs, knots, deg);
+//        BSpline bs(coeffs, knots, deg);
+        BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -246,7 +249,8 @@ void POP12::P12_2()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs, knots, deg);
+//        BSpline bs(coeffs, knots, deg);
+        BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -291,7 +295,8 @@ void POP12::P12_2()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs, knots, deg);
+//        BSpline bs(coeffs, knots, deg);
+        BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -331,7 +336,8 @@ void POP12::P12_2()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs, knots, deg);
+//        BSpline bs(coeffs, knots, deg);
+        BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -376,7 +382,8 @@ void POP12::P12_2()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs, knots, deg);
+//        BSpline bs(coeffs, knots, deg);
+        BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -421,7 +428,8 @@ void POP12::P12_2()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs, knots, deg);
+//        BSpline bs(coeffs, knots, deg);
+        BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -529,7 +537,8 @@ void POP12::P12_3()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs, knots, deg);
+//        BSpline bs(coeffs, knots, deg);
+        BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 
@@ -565,7 +574,8 @@ void POP12::P12_3()
 
         std::vector< std::vector<double> > knots = getRegularKnotVectors(deg, thislb, thisub);
 
-        BSpline bs(coeffs, knots, deg);
+//        BSpline bs(coeffs, knots, deg);
+        BSpline bs = BSplineWrap::build_bspline(coeffs, knots, deg);
 
         ConstraintPtr cbs = std::make_shared<ConstraintBSpline>(cvars, bs, true);
 

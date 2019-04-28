@@ -13,6 +13,8 @@
 #include "OptimizationProblem/constraintbilinear.h"
 #include "BranchAndBound/branchandbound.h"
 #include "SolverInterface/solveripopt.h"
+#include "Utils/bspline_wrapper.h"
+
 
 using std::cout;
 using std::endl;
@@ -102,7 +104,8 @@ void BilinearRelaxationTest::runProblem()
     }
 
     ConstraintSetPtr constraints2 = std::make_shared<ConstraintSet>();
-    BSpline bs = BSpline::Builder(data).degree(3).build();
+//    BSpline bs = BSpline::Builder(data).degree(3).build();
+    BSpline bs = BSplineWrap::fit_bspline(data, 3);
     ConstraintPtr cbspline = std::make_shared<ConstraintBSpline>(vars, bs, true);
     constraints2->add(cbspline);
 

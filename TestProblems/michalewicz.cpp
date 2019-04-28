@@ -8,7 +8,9 @@
 */
 
 #include "michalewicz.h"
-#include "datatable.h"
+#include "data_table.h"
+#include "Utils/eigen_utils.h"
+#include "Utils/bspline_wrapper.h"
 #include "OptimizationProblem/constraintbspline.h"
 #include "SolverInterface/solveripopt.h"
 #include "BranchAndBound/branchandbound.h"
@@ -71,7 +73,7 @@ void Michalewicz::runProblem()
         {
             DenseVector xd(2); xd << x1i, x2i;
             double yd = michalewiczFunction(xd);
-            data.addSample(xd, yd);
+            data.addSample(eigenToStdVec(xd), yd);
         }
     }
 
@@ -89,7 +91,8 @@ void Michalewicz::runProblem()
 //        cout << "B-spline is NOT very accurate:(" << endl;
 //    }
 
-    BSpline bs = BSpline::Builder(data).degree(3).build();
+//    BSpline bs = BSpline::Builder(data).degree(3).build();
+    BSpline bs = BSplineWrap::fit_bspline(data, 3);
     auto constraint = std::make_shared<ConstraintBSpline>(vars, bs, false);
 
     //SolverIpopt solver(constraint);

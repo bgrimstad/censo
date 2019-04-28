@@ -9,11 +9,14 @@
 
 #include "sixhumpcamel.h"
 
-#include "datatable.h"
+#include "data_table.h"
 #include "OptimizationProblem/constraintset.h"
 #include "OptimizationProblem/constraintbspline.h"
 #include "BranchAndBound/branchandbound.h"
 #include "SolverInterface/solveripopt.h"
+#include "Utils/eigen_utils.h"
+#include "Utils/bspline_wrapper.h"
+
 
 using std::cout;
 using std::endl;
@@ -75,7 +78,7 @@ void SixHumpCamel::runProblem()
             DenseVector xd(2); xd << x1i, x2i;
             double yd = sixHumpCamelFunction(xd);
 
-            data.addSample(xd, yd);
+            data.addSample(eigenToStdVec(xd), yd);
         }
     }
 
@@ -99,7 +102,8 @@ void SixHumpCamel::runProblem()
     //    cout << bsmin << endl;
 
     ConstraintSetPtr constraints2 = std::make_shared<ConstraintSet>();
-    BSpline bs = BSpline::Builder(data).degree(3).build();
+//    BSpline bs = BSpline::Builder(data).degree(3).build();
+    BSpline bs = BSplineWrap::fit_bspline(data, 3);
     ConstraintPtr cbspline = std::make_shared<ConstraintBSpline>(vars, bs, true);
     constraints2->add(cbspline);
 

@@ -11,7 +11,7 @@
 #define CONSTRAINTBSPLINE_H
 
 #include "constraint.h"
-#include "bsplinebuilder.h"
+#include "bspline_builder.h"
 
 using SPLINTER::BSpline;
 

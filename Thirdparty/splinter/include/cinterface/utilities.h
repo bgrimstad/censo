@@ -10,7 +10,7 @@
 #ifndef SPLINTER_UTILITIES_H
 #define SPLINTER_UTILITIES_H
 
-#include "datatable.h"
+#include "data_table.h"
 #include "function.h"
 #include "cinterface.h"
 #include "bspline.h"
@@ -96,14 +96,68 @@ std::vector<NUMERICAL_TYPE> get_vector(DenseVector x)
 template <typename NUMERICAL_TYPE>
 std::vector<NUMERICAL_TYPE> get_vector(NUMERICAL_TYPE *array, int n)
 {
-    auto as_vec = std::vector<NUMERICAL_TYPE>(n);
+    return std::vector<NUMERICAL_TYPE>(array, array + n);
+}
 
-    for (int i = 0; i < n; ++i)
+/**
+ * Convert from pointer to NUMERICAL_TYPE to std::vector<std::vector<NUMERICAL_TYPE>>
+ * Number of values copied: num_per_row[0] * num_per_row[1] * ... * num_per_row[num_rows - 1]
+ *
+ * @param array Pointer to NUMERICAL_TYPE
+ * @param num_per_row Number of elements per row
+ * @param num_rows Number of rows
+ * @return std::vector<NUMERICAL_TYPE> with the same elements as in array
+ */
+template <typename NUMERICAL_TYPE>
+std::vector<std::vector<NUMERICAL_TYPE>> get_vector_vector(NUMERICAL_TYPE *array, int *num_per_row, int num_rows)
+{
+    auto num_per_row_as_vec = std::vector<int>(num_per_row, num_per_row + num_rows);
+
+    auto vec_vec = std::vector<std::vector<NUMERICAL_TYPE>>(num_rows);
+
+    int k = 0;
+    for (int i = 0; i < num_rows; ++i)
     {
-        as_vec.at(i) = array[i];
+        int num_row_i = num_per_row_as_vec.at(i);
+        std::vector<NUMERICAL_TYPE> vec(num_row_i);
+        for (int j = 0; j < num_row_i; ++j)
+        {
+            vec.at(j) = array[k];
+            k++;
+        }
+        vec_vec.at(i) = vec;
     }
 
-    return as_vec;
+    return vec_vec;
+}
+
+/**
+ * Convert from pointer to NUMERICAL_TYPE to std::vector<std::vector<NUMERICAL_TYPE>>
+ * Number of values copied: num_per_row*num_rows
+ *
+ * @param array Pointer to NUMERICAL_TYPE
+ * @param num_per_row Number of elements per row (constant)
+ * @param num_rows Number of rows
+ * @return std::vector<NUMERICAL_TYPE> with the same elements as in array
+ */
+template <typename NUMERICAL_TYPE>
+std::vector<std::vector<NUMERICAL_TYPE>> get_vector_vector(NUMERICAL_TYPE *array, int num_per_row, int num_rows)
+{
+    auto vec_vec = std::vector<std::vector<NUMERICAL_TYPE>>(num_rows);
+
+    int k = 0;
+    for (int i = 0; i < num_rows; ++i)
+    {
+        std::vector<NUMERICAL_TYPE> vec(num_per_row);
+        for (int j = 0; j < num_per_row; ++j)
+        {
+            vec.at(j) = array[k];
+            k++;
+        }
+        vec_vec.at(i) = vec;
+    }
+
+    return vec_vec;
 }
 
 } // namespace SPLINTER
